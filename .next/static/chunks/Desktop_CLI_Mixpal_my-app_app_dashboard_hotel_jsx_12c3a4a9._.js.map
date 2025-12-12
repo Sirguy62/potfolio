@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/edwingospel/Desktop/CLI/Mixpal/my-app/app/dashboard/hotel.jsx"],"sourcesContent":["\"use client\";\nimport React from 'react'\n\nconst Hotel = () => {\n  return (\n    <div className='text-white'>\n      Hello\n    </div>\n  )\n}\n\nexport default Hotel\n"],"names":[],"mappings":";;;;;AACA;AADA;;;AAGA,MAAM,QAAQ;IACZ,qBACE,sOAAC;QAAI,WAAU;kBAAa;;;;;;AAIhC;KANM;uCAQS","debugId":null}}]
-}
