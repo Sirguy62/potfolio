@@ -1,0 +1,8 @@
+{
+  "/api/hotels/route": "app/api/hotels/route.js",
+  "/api/search-by-coordinates/route": "app/api/search-by-coordinates/route.js",
+  "/auth/page": "app/auth/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/hotels/page": "app/hotels/page.js",
+  "/page": "app/page.js"
+}

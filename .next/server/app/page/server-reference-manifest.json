@@ -1,0 +1,20 @@
+{
+  "node": {
+    "7fd34d9e8e373092c4243a5351bdbc85e9a17d7ad3": {
+      "workers": {
+        "app/page": {
+          "moduleId": "[project]/Desktop/CLI/Mixpal/my-app/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signOut",
+          "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "exportedName": "signOut",
+      "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+    }
+  },
+  "edge": {}
+}

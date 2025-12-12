@@ -1,0 +1,65 @@
+{
+  "node": {
+    "7fd34d9e8e373092c4243a5351bdbc85e9a17d7ad3": {
+      "workers": {
+        "app/auth/page": {
+          "moduleId": "[project]/Desktop/CLI/Mixpal/my-app/.next-internal/server/app/auth/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signOut",
+          "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+        }
+      },
+      "layer": {
+        "app/auth/page": "action-browser"
+      },
+      "exportedName": "signOut",
+      "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+    },
+    "7f75c87dac505767286ab885146e90567327b52d7a": {
+      "workers": {
+        "app/auth/page": {
+          "moduleId": "[project]/Desktop/CLI/Mixpal/my-app/.next-internal/server/app/auth/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signIn",
+          "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+        }
+      },
+      "layer": {
+        "app/auth/page": "action-browser"
+      },
+      "exportedName": "signIn",
+      "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+    },
+    "7fae89581b926d83960e13126602ab3614254ea7f8": {
+      "workers": {
+        "app/auth/page": {
+          "moduleId": "[project]/Desktop/CLI/Mixpal/my-app/.next-internal/server/app/auth/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signInSocial",
+          "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+        }
+      },
+      "layer": {
+        "app/auth/page": "action-browser"
+      },
+      "exportedName": "signInSocial",
+      "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+    },
+    "7f28b416a731643f9d789a677326c436ae825fb04b": {
+      "workers": {
+        "app/auth/page": {
+          "moduleId": "[project]/Desktop/CLI/Mixpal/my-app/.next-internal/server/app/auth/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signUp",
+          "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+        }
+      },
+      "layer": {
+        "app/auth/page": "action-browser"
+      },
+      "exportedName": "signUp",
+      "filename": "Desktop/CLI/Mixpal/my-app/lib/actions/auth-actions.ts"
+    }
+  },
+  "edge": {}
+}
