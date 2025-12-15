@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -10,8 +8,14 @@ export async function GET(req: Request) {
   const checkin_date = searchParams.get("checkin_date");
   const checkout_date = searchParams.get("checkout_date");
   const adults = searchParams.get("adults") ?? "1";
+  const page = searchParams.get("page") ?? "0";
 
-  const host = process.env.RAPID_HOST; // booking-com.p.rapidapi.com
+
+  // ✅ pagination params
+  const offset = searchParams.get("offset") ?? "0";
+  const rows = searchParams.get("rows") ?? "10";
+
+  const host = process.env.RAPID_HOST;
   const key = process.env.RAPID_KEY;
 
   if (!host || !key) {
@@ -35,15 +39,17 @@ export async function GET(req: Request) {
         adults_number: adults,
         checkin_date: checkin_date!,
         checkout_date: checkout_date!,
-        dest_type: dest_type,
-        dest_id: dest_id,
+        dest_type,
+        dest_id,
         units: "metric",
-        page_number: "0",
+        page_number: page,
         order_by: "popularity",
         include_adjacency: "true",
         room_number: "1",
         filter_by_currency: "USD",
         locale: "en-gb",
+        offset,
+        rows,
       });
 
     const response = await fetch(url, {
@@ -54,8 +60,6 @@ export async function GET(req: Request) {
     });
 
     const data = await response.json();
-    console.log("HOTEL SEARCH RESPONSE:", data);
-
     return NextResponse.json(data);
   } catch (err) {
     console.error("HOTEL SEARCH API ERROR:", err);

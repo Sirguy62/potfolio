@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Nearby from "./components/Nearby";
-import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -20,7 +19,7 @@ export default function Home() {
             discover unforgettable events all with one easy to use platform.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex items-center flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/profile"
               className="inline-flex items-center px-6 py-3 border border-transparent text-xl font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
@@ -220,7 +219,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

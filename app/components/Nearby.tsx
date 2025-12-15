@@ -33,6 +33,8 @@ export default function Nearby() {
 
             const data = await res.json();
 
+            // console.log("Location", data);
+
             const hotelsList =
               data.result || data.hotels || data.data || data.list || [];
 

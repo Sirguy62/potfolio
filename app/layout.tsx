@@ -4,7 +4,8 @@ import "./globals.css";
 import Navigation from "./components/Navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import React from "react"; 
+import React from "react";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default async function RootLayout({
       >
         <Navigation session={session} />
         {children}
+        <Footer />
       </body>
     </html>
   );
