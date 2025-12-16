@@ -10,8 +10,6 @@ export async function GET(req: Request) {
   const adults = searchParams.get("adults") ?? "1";
   const page = searchParams.get("page") ?? "0";
 
-
-  // ✅ pagination params
   const offset = searchParams.get("offset") ?? "0";
   const rows = searchParams.get("rows") ?? "10";
 

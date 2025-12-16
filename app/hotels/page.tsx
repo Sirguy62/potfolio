@@ -11,7 +11,7 @@ export default async function Hotel() {
         className="flex flex-col relative w-full min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
         style={{ backgroundImage: "url('/images/good.jpg')" }}
       >
-        <div>
+        {/* <div>
           <img
             src={image}
             alt="logo"
@@ -19,7 +19,7 @@ export default async function Hotel() {
             height={90}
             className="rounded-full"
           />
-        </div>
+        </div> */}
         <div className="flex flex-col items-center justify-center w-full">
           <p className="text-3xl md:text-5xl text-center font-bold text-white-900 mb-6">
             Welcome to Bookora booking platform!

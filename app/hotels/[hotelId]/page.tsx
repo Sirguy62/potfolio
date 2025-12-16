@@ -27,14 +27,15 @@ export default function HotelDetailsPage() {
   const [rooms, setRooms] = useState<RoomBlock[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Calculate dates ONCE
+  const checkin = formatDate(new Date());
+  const checkout = formatDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
+
   useEffect(() => {
     if (!hotelId) return;
 
     async function fetchRooms() {
       try {
-        const checkin = formatDate(new Date());
-        const checkout = formatDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
-
         const res = await fetch(
           `/api/hotel-rooms?hotel_id=${hotelId}&checkin_date=${checkin}&checkout_date=${checkout}`,
           { cache: "no-store" }
@@ -84,7 +85,7 @@ export default function HotelDetailsPage() {
     }
 
     fetchRooms();
-  }, [hotelId]);
+  }, [hotelId, checkin, checkout]); // ✅ correct dependencies
 
   if (loading) {
     return (
@@ -140,8 +141,10 @@ export default function HotelDetailsPage() {
               </p>
             )}
 
-            {/* 👉 Go to Room Single Page */}
-            <Link href={`/hotels/${hotelId}/rooms/${room.block_id}`}>
+            {/* 👉 Room Single Page with dates */}
+            <Link
+              href={`/hotels/${hotelId}/rooms/${room.block_id}?checkin=${checkin}&checkout=${checkout}`}
+            >
               <button className="mt-auto w-full py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition">
                 Reserve Room
               </button>

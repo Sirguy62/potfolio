@@ -4,8 +4,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Loader from "./Loader";
 
+interface Hotel {
+  hotel_id?: string | number;
+  id?: string | number;
+  hotel_name?: string;
+  name?: string;
+  city?: string;
+  review_score?: number | string;
+  max_photo_url?: string;
+  main_photo_url?: string;
+  photo1?: string;
+  image_url?: string;
+}
+
 export default function Nearby() {
-  const [hotels, setHotels] = useState([]);
+  const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -90,7 +103,7 @@ export default function Nearby() {
           </p>
         )}
 
-        {hotels.map((hotel: any) => (
+        {hotels.map((hotel) => (
           <div
             key={hotel.hotel_id || hotel.id}
             className="bg-white  rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-shadow"

@@ -41,7 +41,7 @@ export default function Navigation({ session }: { session: Session | null }) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-4">
+          <nav className="hidden md:flex items-center space-x-2">
             <NavLink href="/" active={isActive("/")}>
               Home
             </NavLink>
@@ -54,8 +54,8 @@ export default function Navigation({ session }: { session: Session | null }) {
                 <NavLink href="/flights" active={isActive("/flights")}>
                   Flight
                 </NavLink>
-                <NavLink href="/profile" active={isActive("/profile")}>
-                  Profile
+                <NavLink href="/attraction" active={isActive("/attraction")}>
+                  Attraction
                 </NavLink>
 
                 <div className="flex items-center space-x-3 ml-4">
@@ -108,8 +108,8 @@ export default function Navigation({ session }: { session: Session | null }) {
               <MobileLink href="/flights" onClick={() => setOpen(false)}>
                 Flight
               </MobileLink>
-              <MobileLink href="/profile" onClick={() => setOpen(false)}>
-                Profile
+              <MobileLink href="/attraction" onClick={() => setOpen(false)}>
+                Attraction
               </MobileLink>
 
               <div className="pt-4 border-t">
@@ -141,7 +141,6 @@ export default function Navigation({ session }: { session: Session | null }) {
   );
 }
 
-/* Helpers */
 function NavLink({
   href,
   active,
