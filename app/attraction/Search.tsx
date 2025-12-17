@@ -20,28 +20,41 @@ export default function Search() {
   const [startDate, setStartDate] = useState(params.get("startDate") || "");
   const [endDate, setEndDate] = useState(params.get("endDate") || "");
 
-  useEffect(() => {
-    if (query.length < 2) {
-      setResults([]);
-      return;
-    }
+  import { useEffect, useState } from "react";
 
-    const controller = new AbortController();
+  function Search({ query }: { query: string }) {
+    const [destinations, setDestinations] = useState([]);
 
-    async function fetchDestinations() {
-      setLoading(true);
-      const res = await fetch(`/api/destinations?q=${query}`, {
-        signal: controller.signal,
-      });
-      const data = await res.json();
-      setResults(data);
-      setLoading(false);
-    }
+    useEffect(() => {
+      const controller = new AbortController(); // Create controller inside effect
+      const signal = controller.signal;
 
-    fetchDestinations();
+      async function fetchDestinations() {
+        try {
+          const res = await fetch(`/api/destinations?query=${query}`, {
+            signal,
+          });
+          const data = await res.json();
+          setDestinations(data.result || []);
+        } catch (err: any) {
+          if (err.name === "AbortError") {
+            // fetch was aborted, no need to log
+            return;
+          }
+          console.error("Fetch error:", err);
+        }
+      }
 
-    return () => controller.abort();
-  }, [query]);
+      fetchDestinations();
+
+      return () => {
+        controller.abort(); // safely abort fetch on cleanup
+      };
+    }, [query]);
+
+    // rest of your component...
+  }
+
 
   function handleSelect(d: Destination) {
     setQuery(d.label);
