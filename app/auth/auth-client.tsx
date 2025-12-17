@@ -72,7 +72,7 @@ export default function AuthClientPage() {
             <p className="text-gray-600">
               {isSignIn
                 ? "Sign in to your account to continue"
-                : "Sign up to get started with better-auth"}
+                : "Sign up to get started with Bookora"}
             </p>
           </div>
 
