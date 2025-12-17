@@ -8,6 +8,11 @@
     "start": "next start",
     "lint": "eslint"
   },
+
+  "prisma": {
+  "binaryTargets": ["native", "rhel-openssl-3.0.x"]
+},
+
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "amadeus": "^11.0.0",
