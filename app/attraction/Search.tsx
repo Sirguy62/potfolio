@@ -20,7 +20,6 @@ export default function Search() {
   const [startDate, setStartDate] = useState(params.get("startDate") || "");
   const [endDate, setEndDate] = useState(params.get("endDate") || "");
 
-  import { useEffect, useState } from "react";
 
   function Search({ query }: { query: string }) {
     const [destinations, setDestinations] = useState([]);
