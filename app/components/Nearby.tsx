@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Loader from "./Loader";
 import Image from "next/image";
 
-
 interface Hotel {
   hotel_id?: string | number;
   id?: string | number;
@@ -167,8 +166,8 @@ function HotelCard({ hotel }: { hotel: Hotel }) {
           alt={hotel.hotel_name || hotel.name || "Hotel Image"}
           className="w-full h-48 object-cover"
           loading="lazy"
-          width={80}
-          height={80}
+          width={100}
+          height={100}
         />
       </div>
       <h3 className="text-lg font-semibold text-gray-900">

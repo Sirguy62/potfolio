@@ -65,8 +65,8 @@ export default function Navigation({ session }: { session: Session | null }) {
                     alt="profile"
                   />
                   <div className="text-sm text-gray-600">
-                    <p className="font-medium">{user?.name}</p>
-                    <p className="text-gray-500">{user?.email}</p>
+                    <p className="font-medium truncate">{user?.name}</p>
+                    <p className="text-gray-500 truncate">{user?.email}</p>
                   </div>
                   <button
                     onClick={handleSignOut}
@@ -118,7 +118,7 @@ export default function Navigation({ session }: { session: Session | null }) {
                   src="/images/profile.jpg"
                   alt="profile"
                 />
-                <p className="text-sm mt-1 font-medium text-gray-600">
+                <p className="text-sm mt-1 font-medium text-gray-600 truncate">
                   {user?.name}
                 </p>
                 <p className="text-xs text-gray-600">{user?.email}</p>

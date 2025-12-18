@@ -3,12 +3,10 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Spinner from "@/app/components/Spinner";
 import { CiStar } from "react-icons/ci";
 import HotelSearch from "@/app/components/HotelSearch";
 import Image from "next/image";
-
-
+import Loader from "@/app/components/Loader";
 
 const PAGE_SIZE = 5;
 
@@ -47,7 +45,7 @@ export default function HotelsResultPage() {
   if (loading)
     return (
       <div className="flex min-h-screen justify-center items-center my-auto h-full">
-        <Spinner />
+        <Loader />
       </div>
     );
 
@@ -77,8 +75,8 @@ export default function HotelsResultPage() {
               alt={hotel.hotel_name}
               className="rounded w-full h-52 object-cover mb-3"
               loading="lazy"
-              width={80}
-              height={80}
+              width={100}
+              height={100}
             />
 
             <h3 className="font-semibold text-xl text-gray-800">

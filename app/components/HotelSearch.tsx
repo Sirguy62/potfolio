@@ -17,19 +17,31 @@ const TYPE_MAP: Record<string, { search_type: string; dest_type: string }> = {
 
 export default function HotelSearch() {
   const router = useRouter();
+
   const [city, setCity] = useState("");
   const [locations, setLocations] = useState<LocationResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  function getDate(offset: number) {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d.toISOString().split("T")[0];
-  }
+  // ✅ CHECK-IN / CHECK-OUT STATE (UI ONLY)
+  const [checkinDate, setCheckinDate] = useState("");
+  const [checkoutDate, setCheckoutDate] = useState("");
 
   async function handleSearch() {
-    if (!city.trim()) return;
+    if (!city.trim()) {
+      setError("Please enter a city");
+      return;
+    }
+
+    if (!checkinDate || !checkoutDate) {
+      setError("Please select check-in and check-out dates");
+      return;
+    }
+
+    if (checkoutDate <= checkinDate) {
+      setError("Check-out date must be after check-in date");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -37,7 +49,6 @@ export default function HotelSearch() {
     try {
       const res = await fetch(`/api/hotels?city=${city}`);
       const data = await res.json();
-      console.log("Hotels", data)
       setLocations(Array.isArray(data) ? data : []);
     } catch {
       setError("Failed to fetch locations");
@@ -53,8 +64,8 @@ export default function HotelSearch() {
       dest_id: loc.dest_id,
       dest_type: map.dest_type,
       search_type: map.search_type,
-      checkin_date: getDate(3),
-      checkout_date: getDate(5),
+      checkin_date: checkinDate,
+      checkout_date: checkoutDate,
       adults: "1",
     });
 
@@ -63,16 +74,34 @@ export default function HotelSearch() {
 
   return (
     <div className="space-y-4 relative">
-      <div className="flex w-full gap-4 bg-white p-4 rounded-lg">
+      {/* SEARCH CONTROLS */}
+      <div className="flex flex-col md:flex-row w-full gap-4 bg-white p-4 rounded-lg">
         <input
-          className=" p-2 w-full text-gray-500"
+          className="p-2 w-full text-gray-600 border rounded"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          placeholder="Enter city maybe Lagos"
+          placeholder="Enter city (e.g. Lagos)"
         />
+
+        {/* ✅ CHECK-IN */}
+        <input
+          type="date"
+          value={checkinDate}
+          onChange={(e) => setCheckinDate(e.target.value)}
+          className="p-2 text-gray-600 border rounded"
+        />
+
+        {/* ✅ CHECK-OUT */}
+        <input
+          type="date"
+          value={checkoutDate}
+          onChange={(e) => setCheckoutDate(e.target.value)}
+          className="p-2 text-gray-600 border rounded"
+        />
+
         <button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:cursor-pointer"
         >
           Search
         </button>
@@ -81,13 +110,14 @@ export default function HotelSearch() {
       {loading && <Spinner />}
       {error && <p className="text-red-600">{error}</p>}
 
+      {/* LOCATION RESULTS */}
       {locations.length > 0 && (
-        <div className="space-y-2 max-h-64 overflow-y-auto w-full p-2 text-gray-500 rounded-lg bg-white shadow-sm absolute">
+        <div className="space-y-2 max-h-64 overflow-y-auto w-full p-2 text-gray-600 rounded-lg bg-white shadow-sm absolute z-10">
           {locations.map((loc) => (
             <div
               key={loc.dest_id}
               onClick={() => handleLocationClick(loc)}
-              className="p-3 border-b-gray cursor-pointer hover:bg-gray-100"
+              className="p-3 cursor-pointer hover:bg-gray-100"
             >
               {loc.label}
             </div>

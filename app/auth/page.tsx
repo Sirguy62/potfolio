@@ -9,7 +9,7 @@ export default async function AuthPage() {
   });
 
   if (session) {
-    redirect("/dashboard");
+    redirect("/");
   }
 
   return <AuthClientPage />;
