@@ -6,6 +6,8 @@ import Link from "next/link";
 import Spinner from "@/app/components/Spinner";
 import { CiStar } from "react-icons/ci";
 import HotelSearch from "@/app/components/HotelSearch";
+import Image from "next/image";
+
 
 
 const PAGE_SIZE = 5;
@@ -66,7 +68,7 @@ export default function HotelsResultPage() {
             href={`/hotels/${hotel.hotel_id}`}
             className="border rounded-lg p-4 bg-white hover:shadow-lg transition"
           >
-            <img
+            <Image
               src={
                 hotel.max_1440_photo_url ||
                 hotel.main_photo_url ||
@@ -74,20 +76,31 @@ export default function HotelsResultPage() {
               }
               alt={hotel.hotel_name}
               className="rounded w-full h-52 object-cover mb-3"
+              loading="lazy"
+              width={80}
+              height={80}
             />
 
             <h3 className="font-semibold text-xl text-gray-800">
               {hotel.hotel_name}
             </h3>
             <div className="flex items-center gap-1 ">
-              <h3 className="text-gray-600">Address:</h3>
+              <h3 className="text-gray-600 font-semibold">Address:</h3>
               <p className="text-sm text-gray-600 text-center truncate">
                 {hotel.address || "No address"}
               </p>
             </div>
+            <div className="flex items-center gap-1 ">
+              <h3 className="text-gray-600 font-semibold">
+                Type Of Accomodation:
+              </h3>
+              <p className="text-sm text-gray-600 text-center truncate">
+                {hotel.accommodation_type_name || "No address"}
+              </p>
+            </div>
 
             <div className="flex items-center gap-1">
-              <h3 className="text-gray-600">Rating:</h3>
+              <h3 className="text-gray-600 font-semibold">Rating:</h3>
               <div className="flex items-center justify-center ">
                 <span className="text-sm flex items-center text-gray-600">
                   {hotel.review_score || "N/A"}

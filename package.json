@@ -8,11 +8,12 @@
     "start": "next start",
     "lint": "eslint"
   },
-
   "prisma": {
-  "binaryTargets": ["native", "rhel-openssl-3.0.x"]
-},
-
+    "binaryTargets": [
+      "native",
+      "rhel-openssl-3.0.x"
+    ]
+  },
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "amadeus": "^11.0.0",
@@ -21,13 +22,16 @@
     "prisma": "^6.19.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
+    "@types/react-slick": "^0.23.13",
     "autoprefixer": "^10.4.22",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",

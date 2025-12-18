@@ -65,7 +65,7 @@ export default function HotelSearch() {
     <div className="space-y-4 relative">
       <div className="flex w-full gap-4 bg-white p-4 rounded-lg">
         <input
-          className="border p-2 w-full text-gray-500"
+          className=" p-2 w-full text-gray-500"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           placeholder="Enter city maybe Lagos"

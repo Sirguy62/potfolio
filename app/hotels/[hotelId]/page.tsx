@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Spinner from "@/app/components/Spinner";
-import Footer from "@/app/components/Footer";
+import Image from "next/image";
+
 
 function formatDate(date: Date) {
   return date.toISOString().split("T")[0];
@@ -74,7 +75,7 @@ export default function HotelDetailsPage() {
               mealplan: block.mealplan,
             }))
           : [];
-
+        console.log("Rooms", roomList);
         setRooms(roomList);
       } catch (error) {
         console.error("Failed to load rooms", error);
@@ -114,10 +115,13 @@ export default function HotelDetailsPage() {
             className="shadow-md rounded-lg p-4 bg-white text-black flex flex-col"
           >
             {room.image && (
-              <img
+              <Image
                 src={room.image}
                 alt={room.name}
                 className="rounded-md mb-3 object-cover h-48 w-full"
+                loading="lazy"
+                width={80}
+                height={80}
               />
             )}
 
