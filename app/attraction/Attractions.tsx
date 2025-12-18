@@ -17,8 +17,21 @@ export default async function Attractions({
     endDate,
   });
 
-console.log("attractions", attractions)
+  console.log("attractions", attractions);
 
+  if (!attractions || attractions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[40vh] px-6 text-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+          No attractions found
+        </h2>
+        <p className="text-gray-600 max-w-md">
+          We couldn’t find any attractions for your selected destination and
+          dates. Try changing the dates or choosing a nearby city.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -35,8 +48,13 @@ console.log("attractions", attractions)
           <h3 className="font-semibold mt-2 text-gray-600">{a.name}</h3>
 
           <p className="text-sm text-gray-600 line-clamp-3">{a.description}</p>
-          <p className="text-sm text-gray-600 line-clamp-3">Rating:{a.rating}</p>
-          <p className="text-sm text-gray-600 line-clamp-3">Price:{a.currency}{a.price}</p>
+          <p className="text-sm text-gray-600 line-clamp-3">
+            Rating:{a.rating}
+          </p>
+          <p className="text-sm text-gray-600 line-clamp-3">
+            Price:{a.currency}
+            {a.price}
+          </p>
         </div>
       ))}
     </div>

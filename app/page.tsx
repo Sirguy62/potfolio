@@ -36,38 +36,6 @@ export default function Home() {
         {/* <div className="mt-20 bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           <RecommendedFlights />
         </div> */}
-
-        {/* Info Section */}
-        <div className="mt-20 text-center">
-          <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
-            <h3 className="text-2xl font-bold text-blue-900 mb-4">
-              About Better-Auth
-            </h3>
-            <p className="text-blue-800 text-lg mb-6">
-              Better-Auth is a modern, flexible authentication library for
-              Next.js that provides a seamless developer experience with
-              built-in security and extensive customization options.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://better-auth.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 transition-colors"
-              >
-                Learn More
-              </a>
-              <a
-                href="https://github.com/next-authjs/next-auth"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 transition-colors"
-              >
-                View on GitHub
-              </a>
-            </div>
-          </div>
-        </div>
       </main>
     </div>
   );
