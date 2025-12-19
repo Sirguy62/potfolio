@@ -1,8 +1,17 @@
 "use client";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import Footer from "@/app/components/Footer";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { getBooking, clearBooking } from "@/lib/booking";
+import { calculateNights, calculateTotal } from "@/lib/pricing";
+
+type Booking = {
+  checkin_date: string;
+  checkout_date: string;
+  adults?: number;
+  price_per_night?: number;
+  currency?: string;
+};
 
 export default function CheckoutClient() {
   const { hotelId, roomId } = useParams<{
@@ -10,12 +19,9 @@ export default function CheckoutClient() {
     roomId: string;
   }>();
 
-  const searchParams = useSearchParams();
-  const checkin = searchParams.get("checkin");
-  const checkout = searchParams.get("checkout");
-
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [booking, setBooking] = useState<Booking | null>(null);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -24,29 +30,43 @@ export default function CheckoutClient() {
     guests: 1,
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
-
-  async function handleSubmit() {
-    if (!checkin || !checkout) {
-      alert("Missing dates. Please restart booking.");
+  // ✅ Load booking ONCE
+  useEffect(() => {
+    const data = getBooking();
+    if (!data) {
+      router.replace("/hotels");
       return;
     }
+    setBooking(data);
+  }, [router]);
 
+  if (!booking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Loading booking...
+      </div>
+    );
+  }
+
+  const nights = calculateNights(booking.checkin_date, booking.checkout_date);
+
+  const pricing =
+    booking.price_per_night && booking.currency
+      ? calculateTotal(booking.price_per_night, nights)
+      : null;
+
+  async function handleSubmit() {
     setLoading(true);
 
-    // 🔥 This is what you'll later send to backend / Stripe / DB
     console.log("BOOKING DATA:", {
       hotelId,
       roomId,
-      checkin,
-      checkout,
+      ...booking,
       ...form,
     });
 
     setTimeout(() => {
-      setLoading(false);
+      clearBooking();
       router.push("/success");
     }, 1500);
   }
@@ -58,45 +78,76 @@ export default function CheckoutClient() {
           Checkout
         </h1>
 
-        {/* ✅ Dates from flow (read-only) */}
-        <p className="text-sm text-gray-600 text-center">
-          Stay: <strong>{checkin}</strong> → <strong>{checkout}</strong>
+        <p className="text-sm text-center text-gray-600">
+          Stay: <strong>{booking.checkin_date}</strong> →{" "}
+          <strong>{booking.checkout_date}</strong>
         </p>
+
+        {pricing && (
+          <div className="border rounded-lg p-4 bg-gray-50 space-y-2 text-sm">
+            <div className="flex justify-between text-gray-600">
+              <span>Price per night</span>
+              <span>
+                {booking.currency} {booking.price_per_night}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-gray-600">
+              <span>Nights</span>
+              <span>{nights}</span>
+            </div>
+
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span>
+                {booking.currency} {pricing.subtotal}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-gray-600">
+              <span>Taxes & fees</span>
+              <span>
+                {booking.currency} {pricing.taxes}
+              </span>
+            </div>
+
+            <hr />
+
+            <div className="flex justify-between font-semibold text-lg text-gray-600">
+              <span>Total</span>
+              <span>
+                {booking.currency} {pricing.total}
+              </span>
+            </div>
+          </div>
+        )}
 
         <input
           name="fullName"
           placeholder="Full name"
-          className="w-full border text-gray-600 rounded-md p-2"
-          onChange={handleChange}
+          className="w-full border rounded p-2 text-gray-600"
+          onChange={(e) => setForm({ ...form, fullName: e.target.value })}
         />
 
         <input
           name="email"
           type="email"
           placeholder="Email"
-          className="w-full border text-gray-600 rounded-md p-2"
-          onChange={handleChange}
+          className="w-full border rounded p-2 text-gray-600"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
         <input
           name="phone"
           placeholder="Phone"
-          className="w-full border text-gray-600 rounded-md p-2"
-          onChange={handleChange}
-        />
-
-        <input
-          name="guests"
-          type="number"
-          min={1}
-          className="w-full border text-gray-600 rounded-md p-2"
-          onChange={handleChange}
+          className="w-full border rounded p-2 text-gray-600"
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
         />
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+          className="w-full py-3 bg-indigo-600 text-white rounded-lg"
         >
           {loading ? "Processing..." : "Confirm Booking"}
         </button>

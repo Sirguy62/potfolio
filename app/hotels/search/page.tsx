@@ -7,6 +7,8 @@ import { CiStar } from "react-icons/ci";
 import HotelSearch from "@/app/components/HotelSearch";
 import Image from "next/image";
 import Loader from "@/app/components/Loader";
+import { getBooking } from "@/lib/booking";
+
 
 const PAGE_SIZE = 5;
 
@@ -17,37 +19,60 @@ export default function HotelsResultPage() {
   const [hotels, setHotels] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [booking, setBooking] = useState<{
+    checkin_date: string;
+    checkout_date: string;
+    adults?: number;
+  } | null>(null);
+
 
   useEffect(() => {
-    async function fetchHotels() {
-      setLoading(true);
+    const data = getBooking();
 
-      const params = new URLSearchParams(searchParams.toString());
-
-      // 🔑 pagination params
-      params.set("offset", ((page - 1) * PAGE_SIZE).toString());
-      params.set("rows", PAGE_SIZE.toString());
-
-      const res = await fetch(`/api/hotel-details?${params.toString()}`, {
-        cache: "no-store",
-      });
-
-      const data = await res.json();
-      console.log("Results", data);
-
-      setHotels(Array.isArray(data.result) ? data.result : []);
-      setLoading(false);
+    if (!data) {
+      router.replace("/hotels"); 
+      return;
     }
 
-    fetchHotels();
-  }, [searchParams, page]);
+    setBooking(data);
+  }, [router]);
 
-  if (loading)
-    return (
-      <div className="flex min-h-screen justify-center items-center my-auto h-full">
-        <Loader />
-      </div>
-    );
+ useEffect(() => {
+   if (!booking) return;
+
+   async function fetchHotels() {
+     setLoading(true);
+
+     const params = new URLSearchParams(searchParams.toString());
+
+     // 🔑 pagination
+     params.set("offset", ((page - 1) * PAGE_SIZE).toString());
+     params.set("rows", PAGE_SIZE.toString());
+
+     // ✅ inject dates from sessionStorage
+     params.set("checkin_date", booking?.checkin_date || "");
+     params.set("checkout_date", booking?.checkout_date || "");
+     params.set("adults", String(booking?.adults || 1));
+
+     const res = await fetch(`/api/hotel-details?${params.toString()}`, {
+       cache: "no-store",
+     });
+
+     const data = await res.json();
+     setHotels(Array.isArray(data.result) ? data.result : []);
+     setLoading(false);
+   }
+
+   fetchHotels();
+ }, [booking, searchParams, page]);
+
+
+if (loading || !booking)
+  return (
+    <div className="flex min-h-screen justify-center items-center my-auto h-full">
+      <Loader />
+    </div>
+  );
 
   return (
     <div className="max-w-full min-h-screen mx-auto p-6 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -63,7 +88,7 @@ export default function HotelsResultPage() {
         {hotels.map((hotel) => (
           <Link
             key={hotel.hotel_id}
-            href={`/hotels/${hotel.hotel_id}`}
+            href={`/hotels/${hotel.hotel_id}?${searchParams.toString()}`}
             className="border rounded-lg p-4 bg-white hover:shadow-lg transition"
           >
             <Image

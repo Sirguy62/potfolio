@@ -3,6 +3,7 @@
 import Spinner from "@/app/components/Spinner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { saveBooking } from "@/lib/booking";
 
 interface LocationResult {
   dest_id: string;
@@ -58,16 +59,19 @@ export default function HotelSearch() {
   }
 
   function handleLocationClick(loc: LocationResult) {
-    const map = TYPE_MAP[loc.type] || TYPE_MAP.ci;
 
-    const params = new URLSearchParams({
-      dest_id: loc.dest_id,
-      dest_type: map.dest_type,
-      search_type: map.search_type,
-      checkin_date: checkinDate,
-      checkout_date: checkoutDate,
-      adults: "1",
-    });
+     saveBooking({
+       checkin_date: checkinDate,
+       checkout_date: checkoutDate,
+       adults: 1,
+     });
+   const map = TYPE_MAP[loc.type] || TYPE_MAP.ci;
+
+   const params = new URLSearchParams({
+     dest_id: loc.dest_id,
+     dest_type: map.dest_type,
+     search_type: map.search_type,
+   });
 
     router.push(`/hotels/search?${params.toString()}`);
   }
