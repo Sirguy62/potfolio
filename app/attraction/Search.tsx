@@ -157,7 +157,7 @@ export default function Search() {
             setHasSelected(false);
           }}
           placeholder="Search city..."
-          className="border p-2 rounded w-full text-gray-600"
+          className="border p-2 rounded w-full text-gray-300 "
           onFocus={() => results.length && setOpen(true)}
         />
 
@@ -183,14 +183,14 @@ export default function Search() {
         type="date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
-        className="border p-2 rounded w-full text-gray-600"
+        className="border p-2 rounded w-full text-gray-300"
       />
 
       <input
         type="date"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
-        className="border p-2 rounded w-full text-gray-600"
+        className="border p-2 rounded w-full text-gray-300"
       />
 
       {/* SUBMIT */}

@@ -34,7 +34,7 @@ export default function SearchPage() {
         </div>
 
         {/* Content */}
-        <div className="  border-t border-gray-200 ">
+        <div className="  border-t border-gray-200 pt-3 shadow-lg ">
           {activeTab === "hotel" && <HotelSearch />}
           {activeTab === "flight" && <FlightUI />}
           {activeTab === "activities" && <Search />}

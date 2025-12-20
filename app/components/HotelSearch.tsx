@@ -83,7 +83,7 @@ export default function HotelSearch() {
           <div className="w-full flex flex-col">
             <p className="font-semibold text-gray-600 text-lg">City</p>
             <input
-              className="p-2 w-full text-gray-600 rounded"
+              className="p-2 w-full text-gray-300 border rounded"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Enter city (e.g. Lagos)"
@@ -97,7 +97,7 @@ export default function HotelSearch() {
               value={checkinDate}
               aria-label="checkin"
               onChange={(e) => setCheckinDate(e.target.value)}
-              className="p-2 text-gray-600  rounded"
+              className="p-2 text-gray-300 border  rounded"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function HotelSearch() {
               value={checkoutDate}
               aria-label="checkout"
               onChange={(e) => setCheckoutDate(e.target.value)}
-              className="p-2 text-gray-600  rounded"
+              className="p-2 text-gray-300 border  rounded"
             />
           </div>
         </div>
