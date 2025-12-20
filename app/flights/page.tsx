@@ -2,168 +2,133 @@
 
 import { useState } from "react";
 
-export default function FlightSearch() {
-  const [from, setFrom] = useState("London");
-  const [to, setTo] = useState("Paris");
+type Flight = {
+  id?: string;
+  departureAirport?: { code?: string };
+  arrivalAirport?: { code?: string };
+  departureTime?: string;
+  arrivalTime?: string;
+  price?: {
+    units?: number;
+    currencyCode?: string;
+  };
+};
+
+export default function FlightsPage() {
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [departDate, setDepartDate] = useState("");
-  const [travelers, setTravelers] = useState(1);
-  const [cabinClass, setCabinClass] = useState("ECONOMY");
-  const [nonStop, setNonStop] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<any>(null);
   const [error, setError] = useState("");
+  const [flights, setFlights] = useState<Flight[]>([]);
 
   async function handleSearch() {
     setLoading(true);
     setError("");
-    setResults(null);
+    setFlights([]);
 
     try {
       const res = await fetch(
-        `/api/flights/search?from=${from}&to=${to}&depart_date=${departDate}`
+        `/api/flights?from=${from}&to=${to}&depart_date=${departDate}`
       );
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Failed to fetch flights");
+        setError(data.error || "Failed to fetch flights");
+        return;
       }
 
-      const data = await res.json();
-      setResults(data);
-    } catch (err: any) {
-      setError(err.message);
+      // Booking.com response usually nests results deeply
+      const results =
+        data?.data?.flightOffers ||
+        data?.data ||
+        [];
+
+      setFlights(Array.isArray(results) ? results : []);
+    } catch (err) {
+      setError("Something went wrong while searching flights");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
-      {/* HERO */}
-      <div className="bg-blue-600 text-white py-16 text-center">
-        <h1 className="text-3xl md:text-4xl font-semibold max-w-3xl mx-auto">
-          Discover amazing destinations, book flights and hotels, and find
-          exciting activities for unforgettable experiences.
-        </h1>
-      </div>
+    <div className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-gray-600">Search Flights</h1>
 
-      {/* SEARCH CARD */}
-      <div className="max-w-6xl mx-auto -mt-16 px-4">
-        <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-          {/* Tabs */}
-          <div className="flex gap-6 border-b pb-3">
-            <button className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-2">
-              ✈ Flights
-            </button>
-            <button className="text-gray-400 cursor-not-allowed">
-              🏨 Hotels
-            </button>
-            <button className="text-gray-400 cursor-not-allowed">
-              📍 Activities
-            </button>
-          </div>
-
-          {/* Trip Type */}
-          <div className="flex gap-4">
-            <button className="px-4 py-2 rounded-md bg-gray-100 text-gray-700">
-              One Way
-            </button>
-            <button className="px-4 py-2 rounded-md bg-blue-600 text-white">
-              Round Trip
-            </button>
-          </div>
-
-          {/* FORM GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+        {/* Search Form */}
+        <div className="bg-white p-6 rounded-lg shadow space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
-              className="border rounded-md px-4 py-3"
-              placeholder="From"
+              className="border p-3 rounded text-gray-600"
+              placeholder="From (IATA e.g. LHR)"
               value={from}
-              onChange={(e) => setFrom(e.target.value)}
+              onChange={(e) => setFrom(e.target.value.toUpperCase())}
             />
 
             <input
-              className="border rounded-md px-4 py-3"
-              placeholder="To"
+              className="border p-3 rounded text-gray-600"
+              placeholder="To (IATA e.g. JFK)"
               value={to}
-              onChange={(e) => setTo(e.target.value)}
+              onChange={(e) => setTo(e.target.value.toUpperCase())}
             />
 
             <input
               type="date"
-              className="border rounded-md px-4 py-3"
+              className="border p-3 rounded text-gray-600"
               value={departDate}
               onChange={(e) => setDepartDate(e.target.value)}
             />
-
-            <input
-              type="date"
-              className="border rounded-md px-4 py-3"
-              disabled
-              placeholder="Return"
-            />
-
-            <select
-              className="border rounded-md px-4 py-3"
-              value={travelers}
-              onChange={(e) => setTravelers(Number(e.target.value))}
-            >
-              <option value={1}>1 adult</option>
-              <option value={2}>2 adults</option>
-              <option value={3}>3 adults</option>
-            </select>
-
-            <select
-              className="border rounded-md px-4 py-3"
-              value={cabinClass}
-              onChange={(e) => setCabinClass(e.target.value)}
-            >
-              <option value="ECONOMY">Economy</option>
-              <option value="BUSINESS">Business</option>
-              <option value="FIRST">First</option>
-            </select>
           </div>
 
-          {/* OPTIONS */}
-          <div className="flex items-center gap-6">
-            <select className="border rounded-md px-4 py-2">
-              <option>🇳🇬 NGN</option>
-              <option>🇦🇪 AED</option>
-              <option>🇺🇸 USD</option>
-            </select>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={nonStop}
-                onChange={() => setNonStop(!nonStop)}
-              />
-              <span>Non-stop</span>
-            </label>
-          </div>
-
-          {/* SEARCH BUTTON */}
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 rounded-md transition"
+            className="w-full bg-blue-600 text-white py-3 rounded font-semibold hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? "Searching..." : "Search Flights"}
           </button>
+
+          {error && <p className="text-red-600">{error}</p>}
         </div>
-      </div>
 
-      {/* RESULTS */}
-      <div className="max-w-6xl mx-auto px-4 mt-10">
-        {error && (
-          <p className="text-red-500 font-medium text-center">{error}</p>
-        )}
+        {/* Results */}
+        <div className="mt-8 space-y-4">
+          {flights.length === 0 && !loading && (
+            <p className="text-gray-600 text-center">
+              No flights found
+            </p>
+          )}
 
-        {results && (
-          <pre className="bg-white rounded-lg p-4 text-sm overflow-x-auto shadow">
-            {JSON.stringify(results, null, 2)}
-          </pre>
-        )}
+          {flights.map((flight, idx) => (
+            <div
+              key={flight.id || idx}
+              className="bg-white p-5 rounded-lg shadow flex justify-between items-center"
+            >
+              <div>
+                <p className="font-semibold text-gray-600">
+                  {flight.departureAirport?.code} →{" "}
+                  {flight.arrivalAirport?.code}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {flight.departureTime} – {flight.arrivalTime}
+                </p>
+              </div>
+
+              <div className="text-right">
+                <p className="text-lg font-bold">
+                  {flight.price?.units ?? "—"}{" "}
+                  {flight.price?.currencyCode ?? ""}
+                </p>
+                <button className="mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                  Select
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

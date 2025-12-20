@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Nearby from "./components/Nearby";
+import HomePageSearch from "./components/HomePageSearch";
 
 export default function Home() {
   return (
@@ -18,24 +19,13 @@ export default function Home() {
             Search and book the best hotels, secure affordable flights, and
             discover unforgettable events all with one easy to use platform.
           </p>
-
-          {/* <div className="flex items-center flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/profile"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-xl font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-            >
-              Dev profile
-            </Link>
-          </div> */}
+        </div>
+        <div className="">
+          <HomePageSearch />
         </div>
         <div className="mt-10">
           <Nearby />
         </div>
-
-        {/* Demo Section */}
-        {/* <div className="mt-20 bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <RecommendedFlights />
-        </div> */}
       </main>
     </div>
   );

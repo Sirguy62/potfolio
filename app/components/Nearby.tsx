@@ -75,7 +75,7 @@ export default function Nearby() {
               data.result || data.hotels || data.data || data.list || [];
 
             const limited = Array.isArray(hotelsList)
-              ? hotelsList.slice(0, 6)
+              ? hotelsList.slice(0, 3)
               : [];
 
             setHotels(limited);
