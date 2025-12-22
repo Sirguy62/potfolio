@@ -77,11 +77,31 @@ const settings = {
   dots: true,
   infinite: true,
   speed: 500,
-  slidesToShow: 3,
+  slidesToShow: 1,
   slidesToScroll: 1,
+  mobileFirst: true,
+  centerMode: false,
   autoplay: true,
   autoplaySpeed: 3000,
   responsive: [
+    {
+      breakpoint: 2560,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 1440,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 1280,
+      settings: {
+        slidesToShow: 3,
+      },
+    },
     {
       breakpoint: 1024,
       settings: { slidesToShow: 2 },

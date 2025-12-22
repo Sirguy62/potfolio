@@ -5,7 +5,7 @@ import FlightOffers from "./components/FlightOffers";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen xl:min-h-[30vh] bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Hero Section */}
       <main>
         <section

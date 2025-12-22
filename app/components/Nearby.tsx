@@ -40,33 +40,45 @@ export default function Nearby() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
+    mobileFirst: true,
     centerMode: false,
     autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: "linear",
+    autoplaySpeed: 3000,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 2560,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          centerMode: false,
+          slidesToShow: 4,
         },
+      },
+      {
+        breakpoint: 1440,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 2 },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1,
           centerMode: true,
           centerPadding: "20px",
         },
       },
     ],
   };
-
   useEffect(() => {
     async function fetchNearby() {
       if (!navigator.geolocation) {
@@ -90,7 +102,7 @@ export default function Nearby() {
             );
 
             const data = await res.json();
-            console.log("Nearby", data);
+            // console.log("Nearby", data);
 
             const hotelsList =
               data.result || data.hotels || data.data || data.list || [];
