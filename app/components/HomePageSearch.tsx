@@ -3,16 +3,22 @@
 import { useState } from "react";
 import HotelSearch from "./HotelSearch";
 import Search from "../attraction/Search";
+import FlightSearch from "./flights/FlightSearch";
+import { useRouter } from "next/navigation";
 
 type Tab = "hotel" | "flight" | "activities";
 
 export default function SearchPage() {
   const [activeTab, setActiveTab] = useState<Tab>("hotel");
 
+   const router = useRouter();
+
   return (
-    <div className=" bg-gray-50 lg:h-[40vh]">
+    <div className=" lg:h-[40vh] bg-gradient-to-b from-[#181616c3] to-transparent rounded-md">
       <div className="max-w-6xl mx-auto  p-6">
-        <h1 className="text-3xl font-bold mb-6 text-gray-600">Search</h1>
+        <h1 className="text-3xl text-center lg:text-left font-bold mb-3 text-white">
+          Search
+        </h1>
 
         {/* Tabs */}
         <div className="flex gap-6 w-sm  ">
@@ -36,7 +42,21 @@ export default function SearchPage() {
         {/* Content */}
         <div className="  border-t border-gray-200 pt-3 shadow-lg ">
           {activeTab === "hotel" && <HotelSearch />}
-          {activeTab === "flight" && <FlightUI />}
+          {activeTab === "flight" && (
+            <FlightSearch
+              onSearch={(params) => {
+                const query = new URLSearchParams({
+                  from: params.from.code,
+                  to: params.to.code,
+                  departDate: params.departDate,
+                  adults: String(params.adults),
+                  cabinClass: params.cabinClass,
+                });
+
+                router.push(`/flights/search?${query.toString()}`);
+              }}
+            />
+          )}
           {activeTab === "activities" && <Search />}
         </div>
       </div>
@@ -56,11 +76,11 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className={`flex py-1 my-3  font-medium transition
+      className={`flex py-1 my-3  font-semibold text-xl transition
         ${
           isActive
             ? "border-b-2 border-blue-600 text-blue-600"
-            : " text-gray-600 hover:bg-gray-200"
+            : " text-white hover:text-gray-200"
         }`}
     >
       {label}
@@ -68,21 +88,5 @@ function TabButton({
   );
 }
 
-function FlightUI() {
-  return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Flight Search</h2>
-      <div className="grid md:grid-cols-4 gap-4">
-        <input className="border p-3 rounded" placeholder="From (IATA)" />
-        <input className="border p-3 rounded" placeholder="To (IATA)" />
-        <input type="date" className="border p-3 rounded" />
-        <input type="number" className="border p-3 rounded" placeholder="Passengers" />
-      </div>
-      <button className="mt-4 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
-        Search Flights
-      </button>
-    </div>
-  );
-}
 
 

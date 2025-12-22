@@ -36,14 +36,35 @@ export default function Nearby() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const mobileSliderSettings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
+    centerMode: false,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 5000,
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          centerMode: false,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: "20px",
+        },
+      },
+    ],
   };
 
   useEffect(() => {
@@ -75,7 +96,7 @@ export default function Nearby() {
               data.result || data.hotels || data.data || data.list || [];
 
             const limited = Array.isArray(hotelsList)
-              ? hotelsList.slice(0, 3)
+              ? hotelsList.slice(0, 8)
               : [];
 
             setHotels(limited);
@@ -124,20 +145,14 @@ export default function Nearby() {
         </p>
       )}
 
-      <div className="block md:hidden w-full">
-        <Slider {...mobileSliderSettings}>
+      <div className="w-full max-w-7xl">
+        <Slider {...settings}>
           {hotels.map((hotel) => (
-            <div key={hotel.hotel_id || hotel.id} className="px-2">
+            <div key={hotel.hotel_id || hotel.id} className="px-3">
               <HotelCard hotel={hotel} />
             </div>
           ))}
         </Slider>
-      </div>
-
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-        {hotels.map((hotel) => (
-          <HotelCard key={hotel.hotel_id || hotel.id} hotel={hotel} />
-        ))}
       </div>
 
       <Link

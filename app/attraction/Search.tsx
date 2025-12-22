@@ -70,6 +70,7 @@ export default function Search() {
 
         setResults(uniqueResults);
         setOpen(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         if (err.name !== "AbortError") {
           console.error(err);
@@ -146,7 +147,7 @@ export default function Search() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex flex-col md:flex-row gap-4 p-6 bg-white border rounded-lg"
+      className="relative flex w-full flex-col md:flex-row gap-4 p-6 bg-white border rounded-lg"
     >
       {/* CITY AUTOCOMPLETE */}
       <div ref={wrapperRef} className="relative w-full">

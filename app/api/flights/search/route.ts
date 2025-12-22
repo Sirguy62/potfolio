@@ -30,7 +30,7 @@ export async function GET(req: Request) {
 
   const res = await fetch(url, {
     headers: {
-      "X-RapidAPI-Key": process.env.RAPIDAPI_KEY!,
+      "X-RapidAPI-Key": process.env.RAPID_KEY!,
       "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
     },
     cache: "no-store",

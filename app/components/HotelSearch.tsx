@@ -77,7 +77,7 @@ export default function HotelSearch() {
   }
 
   return (
-    <div className="space-y-4 relative">
+    <div className="space-y-4 relative w-full">
       <div className=" bg-white p-4 rounded-lg flex flex-col gap-4 lg:flex-row w-full">
         <div className="flex flex-col md:flex-row w-full gap-4">
           <div className="w-full flex flex-col">

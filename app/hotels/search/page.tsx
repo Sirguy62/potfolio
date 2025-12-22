@@ -16,6 +16,7 @@ export default function HotelsResultPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [hotels, setHotels] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -75,7 +76,7 @@ if (loading || !booking)
   );
 
   return (
-    <div className="max-w-full min-h-screen mx-auto p-6 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="max-w-full min-h-screen mx-auto p-6 bg-linear-to-br from-blue-50 via-white to-indigo-50">
       <div>
         <HotelSearch />
       </div>
