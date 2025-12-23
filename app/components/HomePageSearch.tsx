@@ -20,7 +20,6 @@ export default function SearchPage() {
           Search
         </h1>
 
-        {/* Tabs */}
         <div className="flex gap-6 w-sm  ">
           <TabButton
             label="🏨 Hotels"

@@ -27,11 +27,11 @@ export async function GET(req: Request) {
 
     const data = await res.json();
 
-    // Normalize response for frontend
+    
     const locations = (data ?? []).map((item: any) => ({
       label: `${item.cityName} (${item.short_code})`,
-      code: item.code, // e.g. "BER.AIRPORT"
-      airportCode: item.short_code, // e.g. "BER"
+      code: item.code,
+      airportCode: item.short_code, 
       city: item.cityName,
       country: item.countryName,
       type: item.type,

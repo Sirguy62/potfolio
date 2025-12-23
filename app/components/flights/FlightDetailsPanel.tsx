@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// app/components/FlightDetailsPanel.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";

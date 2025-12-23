@@ -5,8 +5,6 @@ import Slider from "react-slick";
 import FlightCard, { FlightBadge } from "@/app/components/FlightCard";
 import Loader from "./Loader";
 
-/* ---------------- Types ---------------- */
-
 type Price = {
   units: number;
   nanos?: number;
@@ -56,7 +54,6 @@ type FlightDeal = {
   price?: Price;
 };
 
-/* ---------------- Utils ---------------- */
 
 function formatTime(date: string) {
   return new Date(date).toLocaleTimeString([], {
@@ -70,8 +67,6 @@ function formatDuration(minutes: number) {
   const m = minutes % 60;
   return `${h}h ${m}m`;
 }
-
-/* ---------------- Slider settings ---------------- */
 
 const settings = {
   dots: true,
@@ -117,7 +112,6 @@ const settings = {
   ],
 };
 
-/* ---------------- Component ---------------- */
 
 export default function FlightOffers() {
   const [flights, setFlights] = useState<FlightOffer[]>([]);
@@ -134,7 +128,7 @@ export default function FlightOffers() {
       );
       const data = await res.json();
 
-      /* -------- BADGES (FIXED TYPE) -------- */
+    
       const badgeMap: Record<string, FlightBadge> = {};
       const priceLookup: Record<string, Price> = {};
 
@@ -148,7 +142,6 @@ export default function FlightOffers() {
       setBadges(badgeMap);
       setPriceMap(priceLookup);
 
-      /* -------- LIMIT FLIGHTS -------- */
       const MAX_FLIGHTS = 8;
       const offers: FlightOffer[] = Array.isArray(data.flightOffers)
         ? data.flightOffers.slice(0, MAX_FLIGHTS)
@@ -186,7 +179,7 @@ export default function FlightOffers() {
           if (!segment || !firstLeg || !lastLeg) return null;
 
           const flightForCard = {
-            offerToken: offer.offerToken, // ✅ REQUIRED
+            offerToken: offer.offerToken, 
 
             airline: firstLeg.carriersData?.[0] ?? {
               name: "Unknown airline",

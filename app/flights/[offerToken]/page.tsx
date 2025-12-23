@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { matchOffer } from "@/lib/matchOffer";
 import type { ExpiredOfferSnapshot } from "@/app/types/flight";
-
-/* ───────── Minimal types ───────── */
+import Spinner from "@/app/components/Spinner";
 
 type Price = {
   units: number;
@@ -115,10 +114,8 @@ export default function FlightDetailsPage() {
     load();
   }, [offerToken]);
 
-  /* ───────── RENDER ───────── */
-
   if (loading) {
-    return <p className="p-6">{message ?? "Loading flight details…"}</p>;
+    return <div className="div-6 flex justify-center">{message ?? <Spinner />}</div>;
   }
 
   if (!data) {

@@ -3,7 +3,6 @@ import HotelSearch from "../components/HotelSearch";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export default async function Hotel() {
-  const image = "/images/logo.png";
 
   return (
     <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">

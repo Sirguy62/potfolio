@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     `https://booking-com.p.rapidapi.com/v1/flights/search` +
     `?from_code=${from}` +
     `&to_code=${to}` +
-    `&depart_date=${departDate}` + // MUST BE YYYY-MM-DD
+    `&depart_date=${departDate}` + 
     `&adults=1` +
     `&flight_type=ONEWAY` +
     `&order_by=CHEAPEST` +

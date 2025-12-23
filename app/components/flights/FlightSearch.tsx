@@ -18,7 +18,7 @@ type SearchParams = {
 };
 
 type Props = {
-  onSearch?: (params: SearchParams) => void; // ✅ optional
+  onSearch?: (params: SearchParams) => void; 
 };
 
 export default function FlightSearch({ onSearch }: Props) {

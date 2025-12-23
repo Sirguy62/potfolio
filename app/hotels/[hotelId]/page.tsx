@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import Spinner from "@/app/components/Spinner";
 import Image from "next/image";
 import { saveBooking, getBooking } from "@/lib/booking";
@@ -30,19 +29,18 @@ export default function HotelDetailsPage() {
     adults?: number;
   } | null>(null);
 
-  // ✅ READ BOOKING FROM sessionStorage
   useEffect(() => {
     const data = getBooking();
 
     if (!data) {
-      router.replace("/hotels"); // restart flow safely
+      router.replace("/hotels"); 
       return;
     }
 
     setBooking(data);
   }, [router]);
 
-  // ✅ FETCH ROOMS USING STORED DATES
+  
   useEffect(() => {
     if (!booking || !hotelId) return;
 
@@ -163,7 +161,6 @@ export default function HotelDetailsPage() {
               </p>
             )}
 
-            {/* 👉 NO DATES IN URL */}
             <button
               onClick={() => handleReserve(room)}
               className="w-full mt-4 border border-indigo-600 text-indigo-600 py-2 rounded hover:bg-indigo-50"

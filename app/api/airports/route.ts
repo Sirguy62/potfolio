@@ -4,12 +4,11 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get("q");
 
-  // ✅ Guard: short or missing query
   if (!query || query.length < 2) {
     return NextResponse.json({ data: [] });
   }
 
-  // ✅ Guard: missing API key
+  
   if (!process.env.RAPID_KEY) {
     return NextResponse.json({ data: [] });
   }
@@ -39,8 +38,8 @@ export async function GET(req: Request) {
         id: item.id,
         name: item.name,
         city: item.cityName,
-        code: item.code, // "LGW", "JFK", "NYC"
-        type: item.type, // AIRPORT | CITY
+        code: item.code, 
+        type: item.type, 
       })) ?? [];
 
     return NextResponse.json({ data: results });

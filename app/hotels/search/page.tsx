@@ -136,7 +136,6 @@ if (loading || !booking)
         ))}
       </div>
 
-      {/* PAGINATION CONTROLS */}
       <div className="flex justify-center items-center gap-6 mt-10">
         <button
           disabled={page === 1}

@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* ---------------- Types ---------------- */
-
 type Airport = {
   label: string;
   code: string;
@@ -19,12 +17,8 @@ type Props = {
   placeholder?: string;
 };
 
-/* ---------------- Cache ---------------- */
-
 // Simple in-memory cache (lives for session)
 const airportCache = new Map<string, Airport[]>();
-
-/* ---------------- Component ---------------- */
 
 export default function AirportAutocomplete({
   value,
@@ -48,8 +42,6 @@ export default function AirportAutocomplete({
       setResults([]);
       return;
     }
-
-    // 🧠 Cache hit
     if (airportCache.has(query)) {
       setResults(airportCache.get(query)!);
       return;
@@ -80,7 +72,7 @@ export default function AirportAutocomplete({
       } finally {
         setLoading(false);
       }
-    }, 300); // ⏱ debounce
+    }, 300); 
 
     return () => {
       clearTimeout(debounce);

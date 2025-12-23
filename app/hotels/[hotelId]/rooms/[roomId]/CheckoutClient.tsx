@@ -30,7 +30,7 @@ export default function CheckoutClient() {
     guests: 1,
   });
 
-  // ✅ Load booking ONCE
+
   useEffect(() => {
     const data = getBooking();
     if (!data) {

@@ -2,8 +2,6 @@
 
 import FlightDetailsPanel from "./FlightDetailsPanel";
 
-/* ---------------- Types ---------------- */
-
 type MobileDetailsDrawerProps = {
   offer: {
     offerToken?: string;

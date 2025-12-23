@@ -56,7 +56,6 @@ export default function FlightsSearchPage() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Search stays on top */}
       <FlightSearch
         onSearch={(params) => {
           const query = new URLSearchParams({

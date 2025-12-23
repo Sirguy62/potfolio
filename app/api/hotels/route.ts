@@ -9,7 +9,7 @@ export async function GET(req: Request): Promise<NextResponse> {
   const lat = searchParams.get("lat");
   const lon = searchParams.get("lon");
 
-  const host = process.env.RAPID_HOST; // booking-com.p.rapidapi.com
+  const host = process.env.RAPID_HOST; 
   const key = process.env.RAPID_KEY;
 
   if (!host || !key) {
@@ -20,7 +20,6 @@ export async function GET(req: Request): Promise<NextResponse> {
   }
 
   try {
-    // 🔎 City search
     if (city) {
       const url = `https://${host}/v1/hotels/locations?name=${encodeURIComponent(
         city
@@ -39,7 +38,6 @@ export async function GET(req: Request): Promise<NextResponse> {
       return NextResponse.json(Array.isArray(data) ? data : []);
     }
 
-    // 📍 GPS Search
     if (lat && lon) {
       const url = `https://${host}/v1/hotels/locations?latitude=${lat}&longitude=${lon}&locale=en-gb`;
 

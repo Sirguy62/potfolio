@@ -101,7 +101,6 @@ export default function HotelSearch() {
             />
           </div>
 
-          {/* ✅ CHECK-OUT */}
           <div className="w-full flex flex-col">
             <p className="font-semibold text-gray-600 text-lg">Checkout</p>
             <input
@@ -127,7 +126,6 @@ export default function HotelSearch() {
       {loading && <Spinner />}
       {error && <p className="text-red-600">{error}</p>}
 
-      {/* LOCATION RESULTS */}
       {locations.length > 0 && (
         <div className="space-y-2 max-h-64 overflow-y-auto w-full p-2 text-gray-600 rounded-lg bg-white shadow-sm absolute z-10">
           {locations.map((loc) => (

@@ -1,4 +1,4 @@
-import Link from "next/link";
+
 import Nearby from "./components/Nearby";
 import HomePageSearch from "./components/HomePageSearch";
 import FlightOffers from "./components/FlightOffers";

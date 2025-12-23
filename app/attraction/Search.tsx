@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -26,10 +27,10 @@ export default function Search() {
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  // 🧠 IN-MEMORY CACHE
+  
   const cacheRef = useRef<Record<string, Destination[]>>({});
 
-  // 🔍 AUTOCOMPLETE (DEBOUNCED + CACHED)
+ 
   useEffect(() => {
     if (query.length < 2 || hasSelected) {
       setResults([]);
@@ -44,7 +45,6 @@ export default function Search() {
     const controller = new AbortController();
 
     debounceRef.current = setTimeout(async () => {
-      // ✅ Serve from cache
       if (cacheRef.current[query]) {
         setResults(cacheRef.current[query]);
         setOpen(true);
@@ -60,17 +60,15 @@ export default function Search() {
 
        const data: Destination[] = await res.json();
 
-        // Deduplicate by destId
        const uniqueResults: Destination[] = Array.from(
          new Map(data.map((d) => [d.destId, d])).values()
        );
 
-        // 🧠 Save to cache
         cacheRef.current[query] = uniqueResults;
 
         setResults(uniqueResults);
         setOpen(true);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
       } catch (err: any) {
         if (err.name !== "AbortError") {
           console.error(err);
@@ -88,7 +86,6 @@ export default function Search() {
     };
   }, [query, hasSelected]);
 
-  // 🪟 CLICK-OUTSIDE TO CLOSE
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -149,7 +146,6 @@ export default function Search() {
       onSubmit={handleSubmit}
       className="relative flex w-full flex-col md:flex-row gap-4 p-6 bg-white border rounded-lg"
     >
-      {/* CITY AUTOCOMPLETE */}
       <div ref={wrapperRef} className="relative w-full">
         <input
           value={query}
@@ -179,7 +175,6 @@ export default function Search() {
         )}
       </div>
 
-      {/* DATES */}
       <input
         type="date"
         value={startDate}
@@ -194,7 +189,6 @@ export default function Search() {
         className="border p-2 rounded w-full text-gray-300"
       />
 
-      {/* SUBMIT */}
       <button
         type="submit"
         disabled={!destId || !startDate || !endDate || submitting}

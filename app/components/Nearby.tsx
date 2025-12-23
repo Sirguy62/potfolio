@@ -180,7 +180,6 @@ export default function Nearby() {
 function HotelCard({ hotel }: { hotel: Hotel }) {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow cursor-pointer">
-      {/* Image */}
       <div className="rounded-lg overflow-hidden mb-4">
         <Image
           src={

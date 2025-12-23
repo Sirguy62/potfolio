@@ -5,7 +5,7 @@ import MobileDetailsDrawer from "./MobileDetailsDrawer";
 import type { NormalizedFlight } from "@/app/types/flight";
 
 type Props = {
-  flights?: unknown[]; // raw API flights
+  flights?: unknown[];
   selectedFlight: NormalizedFlight | null;
   onSelectFlight: (flight: NormalizedFlight | null) => void;
 };
