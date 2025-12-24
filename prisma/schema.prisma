@@ -1,7 +1,11 @@
+//////////////////////////////////////////////////////
+// GENERATOR & DATASOURCE (SINGLE SOURCE OF TRUTH)
+//////////////////////////////////////////////////////
+
 generator client {
   provider      = "prisma-client-js"
   output        = "../lib/generated/prisma"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"] // <- add this line
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -9,16 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//////////////////////////////////////////////////////
+// BETTER-AUTH MODELS (DO NOT BREAK THESE)
+//////////////////////////////////////////////////////
+
 model User {
-  id            String    @id
+  id            String   @id
   name          String
-  email         String    @unique
+  email         String   @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  accounts      Account[]
-  sessions      Session[]
+
+  // Better-Auth relations
+  accounts Account[]
+  sessions Session[]
+
+  // Workflow relations
+  workflows   Workflow[]       @relation("WorkflowOwner")
+  assignments TaskAssignment[]
+  activities  ActivityLog[]
 
   @@map("user")
 }
@@ -32,7 +47,8 @@ model Session {
   ipAddress String?
   userAgent String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("session")
 }
@@ -51,7 +67,8 @@ model Account {
   password              String?
   createdAt             DateTime
   updatedAt             DateTime
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -65,4 +82,98 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+//////////////////////////////////////////////////////
+// WORKFLOW SYSTEM
+//////////////////////////////////////////////////////
+
+model Workflow {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+
+  owner       User             @relation("WorkflowOwner", fields: [ownerId], references: [id])
+  stages      Stage[]
+  tasks       Task[]
+  automations AutomationRule[]
+}
+
+model Stage {
+  id         String @id @default(cuid())
+  name       String
+  order      Int
+  workflowId String
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+
+  @@unique([workflowId, order])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  priority    Int       @default(0)
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  workflowId String
+  stageId    String
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  stage    Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  assignments TaskAssignment[]
+  activities  ActivityLog[]
+}
+
+model TaskAssignment {
+  id         String   @id @default(cuid())
+  taskId     String
+  userId     String
+  assignedAt DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, userId])
+}
+
+//////////////////////////////////////////////////////
+// ACTIVITY LOG (AUDIT TRAIL)
+//////////////////////////////////////////////////////
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  action     String
+  entityId   String
+  entityType String
+  createdAt  DateTime @default(now())
+
+  userId String?
+  taskId String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+}
+
+//////////////////////////////////////////////////////
+// AUTOMATION ENGINE
+//////////////////////////////////////////////////////
+
+model AutomationRule {
+  id        String   @id @default(cuid())
+  name      String
+  trigger   String
+  condition Json?
+  action    Json
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 }
