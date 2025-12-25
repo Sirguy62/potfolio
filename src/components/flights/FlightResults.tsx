@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NormalizedFlight } from "@/src/types/flight";
+
+import { NormalizedFlight } from "@/types/flight";
 import FlightCard from "../FlightCard";
 import FlightDetailsPanel from "./FlightDetailsPanel";
 import MobileDetailsDrawer from "./MobileDetailsDrawer";

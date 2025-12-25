@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { saveBooking, getBooking } from "@/src/lib/booking";
-import Spinner from "@/src/components/Spinner";
+import { getBooking, saveBooking } from "@/lib/booking";
+import Spinner from "@/components/Spinner";
+
 
 type RoomBlock = {
   block_id: string;

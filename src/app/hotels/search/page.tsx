@@ -5,9 +5,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CiStar } from "react-icons/ci";
 import Image from "next/image";
-import { getBooking } from "@/src/lib/booking";
-import Loader from "@/src/components/Loader";
-import HotelSearch from "@/src/components/HotelSearch";
+import HotelSearch from "@/components/HotelSearch";
+import Loader from "@/components/Loader";
+import { getBooking } from "@/lib/booking";
+// import { getBooking } from "@/src/lib/booking";
+// import Loader from "@/src/components/Loader";
+// import HotelSearch from "@/src/components/HotelSearch";
 
 const PAGE_SIZE = 5;
 

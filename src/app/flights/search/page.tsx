@@ -4,9 +4,9 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import FlightResults from "@/src/components/flights/FlightResults";
-import Spinner from "@/src/components/Spinner";
-import FlightSearch from "@/src/components/flights/FlightSearch";
+import FlightResults from "@/components/flights/FlightResults";
+import Spinner from "@/components/Spinner";
+import FlightSearch from "@/components/flights/FlightSearch";
 
 
 export default function FlightsSearchPage() {

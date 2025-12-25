@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { matchOffer } from "@/src/lib/matchOffer";
-import { ExpiredOfferSnapshot } from "@/src/types/flight";
-import Spinner from "@/src/components/Spinner";
-// import type { ExpiredOfferSnapshot } from "@/app/types/flight";
-// import Spinner from "@/app/components/Spinner";
+import { ExpiredOfferSnapshot } from "@/types/flight";
+import { matchOffer } from "@/lib/matchOffer";
+import Spinner from "@/components/Spinner";
+
 
 type Price = {
   units: number;

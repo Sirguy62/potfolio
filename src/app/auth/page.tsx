@@ -1,4 +1,5 @@
-import { auth } from "@/src/lib/auth";
+
+import { auth } from "@/lib/auth";
 import AuthClientPage from "./auth-client";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

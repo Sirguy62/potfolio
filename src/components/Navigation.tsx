@@ -1,11 +1,11 @@
 "use client";
 
-import { auth } from "@/src/lib/auth";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { signOut } from "@/src/lib/actions/auth-actions";
 import { MdHotelClass, MdMenu, MdClose } from "react-icons/md";
 import { useState } from "react";
+import { auth } from "@/lib/auth";
+import { signOut } from "@/lib/actions/auth-actions";
 
 type Session = typeof auth.$Infer.Session;
 

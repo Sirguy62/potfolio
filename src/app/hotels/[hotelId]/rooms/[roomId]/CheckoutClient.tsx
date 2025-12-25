@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getBooking, clearBooking } from "@/src/lib/booking";
-import { calculateNights, calculateTotal } from "@/src/lib/pricing";
+import { clearBooking, getBooking } from "@/lib/booking";
+import { calculateNights, calculateTotal } from "@/lib/pricing";
+// import { getBooking, clearBooking } from "@/src/lib/booking";
+// import { calculateNights, calculateTotal } from "@/src/lib/pricing";
 
 type Booking = {
   checkin_date: string;

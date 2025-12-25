@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { saveBooking } from "@/src/lib/booking";
 import Spinner from "./Spinner";
+import { saveBooking } from "@/lib/booking";
 
 interface LocationResult {
   dest_id: string;

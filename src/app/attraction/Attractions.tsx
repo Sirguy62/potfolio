@@ -1,4 +1,5 @@
-import { getAttractions } from "@/src/lib/attractions/getAttractions";
+import { getAttractions } from "@/lib/attractions/getAttractions";
+
 
 type Props = {
   destId: string;

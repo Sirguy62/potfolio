@@ -1,6 +1,8 @@
 
-import HotelSearch from "@/src/components/HotelSearch";
-import Nearby from "@/src/components/Nearby";
+// import HotelSearch from "@/src/components/HotelSearch";
+// import Nearby from "@/src/components/Nearby";
+import HotelSearch from "@/components/HotelSearch";
+import Nearby from "@/components/Nearby";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export default async function Hotel() {

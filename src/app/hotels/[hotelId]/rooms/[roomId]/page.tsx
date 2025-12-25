@@ -1,7 +1,8 @@
-import { auth } from "@/src/lib/auth";
+
 import { redirect } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
 import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 export default async function CheckoutPage() {
   const session = await auth.api.getSession({

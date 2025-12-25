@@ -1,7 +1,7 @@
 // app/flights/page.tsx
 "use client";
 
-import FlightSearch from "@/src/components/flights/FlightSearch";
+import FlightSearch from "@/components/flights/FlightSearch";
 import { useRouter } from "next/navigation";
 
 export default function FlightsHomePage() {
