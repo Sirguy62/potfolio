@@ -7,6 +7,7 @@ type Props = {
   onClose: () => void;
   workflowId: string;
   stageId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onTaskCreated: (task: any) => void;
 };
 
@@ -19,6 +20,7 @@ export default function CreateTaskModal({
 }: Props) {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
+  const [priority, setPriority] = useState<number>(1); 
 
   if (!open) return null;
 
@@ -34,6 +36,7 @@ export default function CreateTaskModal({
         title,
         workflowId,
         stageId,
+        priority,
       }),
     });
 
@@ -71,6 +74,21 @@ export default function CreateTaskModal({
           >
             {loading ? "Creating…" : "Create"}
           </button>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-600">
+            Priority
+          </label>
+
+          <select
+            value={priority}
+            onChange={(e) => setPriority(Number(e.target.value))}
+            className="border rounded-md p-2 text-sm w-full"
+          >
+            <option value={0}>Low</option>
+            <option value={1}>Medium</option>
+            <option value={2}>High</option>
+          </select>
         </div>
       </div>
     </div>

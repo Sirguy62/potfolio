@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
+
 /**
  * Default stages created when a workflow is created
  */
@@ -12,7 +13,7 @@ const DEFAULT_STAGES = [
 ];
 
 /**
- * Create a new workflow with default stages
+ * Create workflow
  */
 export async function createWorkflow(params: {
   name: string;
@@ -25,7 +26,7 @@ export async function createWorkflow(params: {
     throw new Error("Workflow name is required");
   }
 
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const workflow = await tx.workflow.create({
       data: {
         name,
@@ -46,8 +47,7 @@ export async function createWorkflow(params: {
 }
 
 /**
- * Fetch a workflow with stages and tasks
- * Ensures the user owns the workflow
+ * Get workflow by id (with stages + tasks)
  */
 export async function getWorkflowById(params: {
   workflowId: string;
@@ -65,7 +65,10 @@ export async function getWorkflowById(params: {
         orderBy: { order: "asc" },
         include: {
           tasks: {
-            orderBy: { createdAt: "asc" },
+            orderBy: [
+              { priority: "desc" }, // 🔥 High → Medium → Low
+              { createdAt: "asc" },
+            ],
           },
         },
       },
@@ -79,8 +82,9 @@ export async function getWorkflowById(params: {
   return workflow;
 }
 
+
 /**
- * List all workflows owned by a user
+ * List user workflows
  */
 export async function listUserWorkflows(userId: string) {
   return prisma.workflow.findMany({
@@ -96,30 +100,28 @@ export async function listUserWorkflows(userId: string) {
 }
 
 /**
- * Rename a workflow
+ * Update workflow (name / description)
  */
-export async function updateWorkflowName(params: {
+export async function updateWorkflow(params: {
   workflowId: string;
   userId: string;
-  name: string;
-  description?: string;
+  name?: string;
+  description?: string | null;
 }) {
-  const { workflowId, userId, name, description } = params;
-
   return prisma.workflow.update({
     where: {
-      id: workflowId,
-      ownerId: userId,
+      id: params.workflowId,
+      ownerId: params.userId, // ✅ FIX
     },
     data: {
-      name,
-      description,
+      name: params.name,
+      description: params.description,
     },
   });
 }
 
 /**
- * Delete a workflow (cascade deletes stages, tasks, etc.)
+ * Delete workflow (hard delete, cascades)
  */
 export async function deleteWorkflow(params: {
   workflowId: string;
@@ -127,9 +129,11 @@ export async function deleteWorkflow(params: {
 }) {
   const { workflowId, userId } = params;
 
-  // Ensure ownership
   const exists = await prisma.workflow.findFirst({
-    where: { id: workflowId, ownerId: userId },
+    where: {
+      id: workflowId,
+      ownerId: userId,
+    },
     select: { id: true },
   });
 

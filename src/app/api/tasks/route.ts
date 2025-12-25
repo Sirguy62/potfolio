@@ -14,7 +14,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { title, description, workflowId, stageId } = await req.json();
+  const { title, description, workflowId, stageId, priority } =
+    await req.json();
 
   if (!title || !workflowId || !stageId) {
     return NextResponse.json(
@@ -29,6 +30,7 @@ export async function POST(req: Request) {
       description,
       workflowId,
       stageId,
+      priority,
       creatorId: session.user.id,
     });
 

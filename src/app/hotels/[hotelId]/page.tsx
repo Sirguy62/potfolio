@@ -67,6 +67,7 @@ export default function HotelDetailsPage() {
         const roomImageMap: Record<string, string> = {};
 
         Object.entries(payload.rooms || {}).forEach(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ([roomId, roomData]: any) => {
             if (roomData?.photos?.length) {
               roomImageMap[roomId] = roomData.photos[0].url_original;
@@ -75,6 +76,7 @@ export default function HotelDetailsPage() {
         );
 
         const roomList: RoomBlock[] = Array.isArray(payload.block)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ? payload.block.map((block: any) => ({
               block_id: block.block_id,
               name: block.room_name || "Room",
