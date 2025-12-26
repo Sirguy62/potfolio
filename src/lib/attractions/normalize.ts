@@ -1,5 +1,6 @@
 import { Attraction } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function normalizeAttraction(p: any): Attraction {
   return {
     id: p.id,

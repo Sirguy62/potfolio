@@ -28,6 +28,7 @@ export async function GET(req: Request) {
     const data = await res.json();
 
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const locations = (data ?? []).map((item: any) => ({
       label: `${item.cityName} (${item.short_code})`,
       code: item.code,

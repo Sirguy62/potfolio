@@ -23,7 +23,7 @@ export default async function WorkflowBoardPage({
   if (!workflow) notFound();
 
   return (
-    <div className="space-x-4">
+    <div className="space-x-4 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <ClientBoard workflow={workflow} />;
     </div>
   ); 

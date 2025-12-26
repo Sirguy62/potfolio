@@ -34,6 +34,7 @@ export async function GET(req: Request) {
     const json = await res.json();
 
     const results =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json?.map((item: any) => ({
         id: item.id,
         name: item.name,

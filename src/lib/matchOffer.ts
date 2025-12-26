@@ -7,6 +7,7 @@ type ExpiredOfferSnapshot = {
   airlineCode?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function matchOffer(expired: ExpiredOfferSnapshot, offers: any[]) {
   if (!offers?.length) return null;
 
