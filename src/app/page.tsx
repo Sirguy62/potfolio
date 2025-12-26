@@ -4,11 +4,11 @@ import FlightOffers from "../components/FlightOffers";
 
 export default function Home() {
   return (
-    <div className="min-h-screen xl:min-h-[30vh] bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className=" xl:min-h-[30vh] ">
       {/* Hero Section */}
       <main>
         <section
-          className="flex flex-col relative w-full min-h-screen md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
+          className="flex flex-col relative w-full  md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
           style={{ backgroundImage: "url('/images/home.jpg')" }}
         >
           <div className="text-center">

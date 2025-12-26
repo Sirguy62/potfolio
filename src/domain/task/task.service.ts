@@ -11,14 +11,16 @@ export async function createTask(params: {
   stageId: string;
   creatorId: string;
   priority?: number;
+  dueDate?: Date | null;
 }) {
-  const { title, description, workflowId, stageId, creatorId, priority } = params;
+  const { title, description, workflowId, stageId, creatorId, priority, dueDate } =
+    params;
 
   if (!title.trim()) {
     throw new Error("Task title is required");
   }
 
-  return prisma.$transaction(async (tx:Prisma.TransactionClient) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const task = await tx.task.create({
       data: {
         title,
@@ -26,6 +28,7 @@ export async function createTask(params: {
         workflowId,
         stageId,
         priority: params.priority ?? 1,
+        dueDate: dueDate ?? null,
       },
     });
 

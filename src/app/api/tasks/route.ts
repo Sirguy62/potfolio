@@ -2,11 +2,6 @@ import { createTask } from "@/domain/task/task.service";
 import { getSession } from "@/lib/get-session";
 import { NextResponse } from "next/server";
 
-
-/**
- * POST /api/tasks
- * Create a task
- */
 export async function POST(req: Request) {
   const session = await getSession();
 
@@ -14,7 +9,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { title, description, workflowId, stageId, priority } =
+  const { title, description, workflowId, stageId, priority, dueDate } =
     await req.json();
 
   if (!title || !workflowId || !stageId) {
@@ -32,6 +27,7 @@ export async function POST(req: Request) {
       stageId,
       priority,
       creatorId: session.user.id,
+      dueDate: dueDate ? new Date(dueDate) : null,
     });
 
     return NextResponse.json(task, { status: 201 });

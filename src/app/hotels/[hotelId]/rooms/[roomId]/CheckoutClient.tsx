@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { clearBooking, getBooking } from "@/lib/booking";
 import { calculateNights, calculateTotal } from "@/lib/pricing";
+import Spinner from "@/components/Spinner";
 // import { getBooking, clearBooking } from "@/src/lib/booking";
 // import { calculateNights, calculateTotal } from "@/src/lib/pricing";
 
@@ -44,7 +45,7 @@ export default function CheckoutClient() {
   if (!booking) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Loading booking...
+       <Spinner />
       </div>
     );
   }
@@ -73,7 +74,7 @@ export default function CheckoutClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6">
+    <div className=" p-6">
       <div className="max-w-xl mx-auto bg-white rounded-lg shadow-md p-6 space-y-4">
         <h1 className="text-2xl font-bold text-gray-600 text-center">
           Checkout

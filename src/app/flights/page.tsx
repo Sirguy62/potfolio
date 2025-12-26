@@ -9,7 +9,7 @@ export default function FlightsHomePage() {
 
   return (
     <div
-      className="flex flex-col relative w-full min-h-screen md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
+      className="flex flex-col relative w-full  md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
       style={{ backgroundImage: "url('/images/airplane.jpg')" }}
     >
       <FlightSearch

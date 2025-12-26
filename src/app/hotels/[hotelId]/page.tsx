@@ -122,7 +122,7 @@ export default function HotelDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="p-6 ">
       <h2 className="text-2xl font-bold text-center text-gray-600 mb-6">
         Available Rooms
       </h2>

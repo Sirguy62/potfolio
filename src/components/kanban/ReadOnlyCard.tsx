@@ -85,6 +85,11 @@ export default function ReadOnlyCard({
             Delete
           </button>
         </div>
+        {task.dueDate && (
+          <span className="text-xs text-gray-500">
+            Due {new Date(task.dueDate).toLocaleDateString()}
+          </span>
+        )}
       </div>
 
       {/* Edit Modal */}

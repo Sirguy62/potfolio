@@ -14,7 +14,7 @@ export default async function WorkflowsPage() {
   const workflows = await listUserWorkflows(session.user.id);
 
   return (
-    <div className="max-w-6xl min-h-screen mx-auto p-6 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="max-w-6xl mx-auto p-6 ">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-700">Workflows</h1>
         <CreateWorkflowButton />

@@ -76,7 +76,7 @@ export default function HotelsResultPage() {
     );
 
   return (
-    <div className="max-w-full min-h-screen mx-auto p-6 bg-linear-to-br from-blue-50 via-white to-indigo-50">
+    <div className="max-w-full  mx-auto p-6 bg-linear-to-br from-blue-50 via-white to-indigo-50">
       <div>
         <HotelSearch />
       </div>

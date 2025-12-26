@@ -8,9 +8,9 @@ import { FaArrowRightLong } from "react-icons/fa6";
 export default async function Hotel() {
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
+    <main className="">
       <section
-        className="flex flex-col relative w-full min-h-screen md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
+        className="flex flex-col relative w-full md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
         style={{ backgroundImage: "url('/images/good.jpg')" }}
       >
         <div className="flex flex-col items-center justify-center w-full">

@@ -196,7 +196,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
      RENDER
   ======================= */
   return (
-    <div className="space-y-6 px-4 min-h-screen">
+    <div className="space-y-6 px-4">
       <Link
         href="/workflows"
         className="inline-flex items-center text-sm pt-2 text-indigo-600 hover:underline"

@@ -21,6 +21,7 @@ export default function CreateTaskModal({
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [priority, setPriority] = useState<number>(1); 
+  const [dueDate, setDueDate] = useState<string>("");
 
   if (!open) return null;
 
@@ -37,6 +38,7 @@ export default function CreateTaskModal({
         workflowId,
         stageId,
         priority,
+        dueDate: dueDate || null,
       }),
     });
 
@@ -89,6 +91,15 @@ export default function CreateTaskModal({
             <option value={1}>Medium</option>
             <option value={2}>High</option>
           </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm text-gray-600 mb-1">Due date</label>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="border rounded-md p-2 text-sm w-full"
+          />
         </div>
       </div>
     </div>
