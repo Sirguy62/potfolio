@@ -45,11 +45,9 @@ export default function ReadOnlyCard({
   return (
     <>
       <div
-        {...listeners}
-        {...attributes}
         ref={setNodeRef}
         style={style}
-        className="bg-white cursor-grab border rounded-md p-3 shadow-sm"
+        className="bg-white  border rounded-md p-3 shadow-sm"
       >
         {/* Top row */}
         <div className="flex items-center justify-between gap-2">
@@ -66,21 +64,27 @@ export default function ReadOnlyCard({
           </span>
 
           {/* Drag handle ONLY */}
-          <span className=" text-gray-600 select-none">☰</span>
+          <span
+            {...listeners}
+            {...attributes}
+            className=" text-gray-600 select-none cursor-grab"
+          >
+            ☰
+          </span>
         </div>
 
         {/* Actions */}
         <div className="flex justify-between mt-2">
           <button
             onClick={() => setOpen(true)}
-            className="text-xs text-indigo-600 cursor-pointer hover:underline"
+            className="text-xs text-indigo-600 hover:underline"
           >
             Edit
           </button>
 
           <button
             onClick={() => onTaskDeleted(task.id)}
-            className="text-xs text-red-500 cursor-pointer hover:underline"
+            className="text-xs text-red-500  hover:underline"
           >
             Delete
           </button>
