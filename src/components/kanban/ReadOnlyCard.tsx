@@ -45,46 +45,42 @@ export default function ReadOnlyCard({
   return (
     <>
       <div
+        {...listeners}
+        {...attributes}
         ref={setNodeRef}
         style={style}
-        className="bg-white border rounded-md p-3 shadow-sm"
+        className="bg-white cursor-grab border rounded-md p-3 shadow-sm"
       >
         {/* Top row */}
         <div className="flex items-center justify-between gap-2">
           <span
-            className={`text-xs px-2 py-0.5 rounded ${
+            className={`text-xs px-2 py-0.5 rounded text-gray-600 ${
               priorityColor[task.priority]
             }`}
           >
             {priorityLabel}
           </span>
 
-          <span className="text-sm font-medium flex-1 truncate">
+          <span className="text-sm font-medium flex-1 truncate text-gray-600">
             {task.title}
           </span>
 
           {/* Drag handle ONLY */}
-          <span
-            {...listeners}
-            {...attributes}
-            className="cursor-grab text-gray-400 select-none"
-          >
-            ☰
-          </span>
+          <span className=" text-gray-600 select-none">☰</span>
         </div>
 
         {/* Actions */}
         <div className="flex justify-between mt-2">
           <button
             onClick={() => setOpen(true)}
-            className="text-xs text-indigo-600 hover:underline"
+            className="text-xs text-indigo-600 cursor-pointer hover:underline"
           >
             Edit
           </button>
 
           <button
             onClick={() => onTaskDeleted(task.id)}
-            className="text-xs text-red-500 hover:underline"
+            className="text-xs text-red-500 cursor-pointer hover:underline"
           >
             Delete
           </button>

@@ -199,7 +199,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     <div className="space-y-6 px-4 min-h-screen">
       <Link
         href="/workflows"
-        className="inline-flex items-center text-sm text-indigo-600 hover:underline"
+        className="inline-flex items-center text-sm pt-2 text-indigo-600 hover:underline"
       >
         ← Back to Workflows
       </Link>
@@ -208,7 +208,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
           {localWorkflow.name}
         </h1>
         {localWorkflow.description && (
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             {localWorkflow.description}
           </p>
         )}
@@ -219,7 +219,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-4 overflow-x-auto">
+        <div className="flex gap-4 overflow-x-auto px-3">
           {localWorkflow.stages.map((stage) => (
             <Column
               key={stage.id}

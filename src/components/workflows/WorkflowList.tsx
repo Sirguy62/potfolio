@@ -18,7 +18,7 @@ export default function WorkflowList({
 
   if (workflows.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-500">No workflows yet.</div>
+      <div className="text-center py-16 text-gray-600">No workflows yet.</div>
     );
   }
 

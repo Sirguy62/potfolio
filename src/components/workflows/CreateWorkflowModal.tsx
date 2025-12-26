@@ -51,30 +51,32 @@ export default function CreateWorkflowModal({ onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-lg w-full max-w-md p-6">
-        <h2 className="text-lg font-semibold mb-4">Create Workflow</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-600">
+          Create Workflow
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-600">
               Workflow name
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-md px-3 py-2"
+              className="w-full border rounded-md px-3 py-2 text-gray-600"
               placeholder="e.g. Product Roadmap"
               autoFocus
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-600">
               Description (optional)
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full border rounded-md px-3 py-2"
+              className="w-full border rounded-md px-3 py-2 text-gray-600"
               rows={3}
             />
           </div>
@@ -85,7 +87,7 @@ export default function CreateWorkflowModal({ onClose }: Props) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm border rounded-md"
+              className="px-4 py-2 text-sm border rounded-md text-gray-600"
               disabled={loading}
             >
               Cancel

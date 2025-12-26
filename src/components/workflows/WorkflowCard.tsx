@@ -61,12 +61,12 @@ export default function WorkflowCard({
       {editing ? (
         <>
           <input
-            className="border p-2 rounded w-full mb-2 text-sm"
+            className="border p-2 rounded w-full text-gray-600 mb-2 text-sm"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <textarea
-            className="border p-2 rounded w-full text-sm"
+            className="border p-2 rounded w-full text-sm text-gray-600"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -80,7 +80,7 @@ export default function WorkflowCard({
             </button>
             <button
               onClick={() => setEditing(false)}
-              className="text-sm text-gray-500"
+              className="text-sm text-gray-600"
             >
               Cancel
             </button>

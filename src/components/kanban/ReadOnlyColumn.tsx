@@ -40,7 +40,7 @@ export default function Column({
       `}
     >
       {stage.tasks.length === 0 && (
-        <div className="text-xs text-gray-400 italic py-4 text-center border border-dashed rounded">
+        <div className="text-xs text-gray-600 italic py-4 text-center border border-dashed rounded">
           Drop tasks here
         </div>
       )}

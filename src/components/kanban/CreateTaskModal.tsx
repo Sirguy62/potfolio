@@ -53,13 +53,13 @@ export default function CreateTaskModal({
   return (
     <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center">
       <div className="bg-white rounded-lg w-96 p-5">
-        <h3 className="font-semibold mb-3">New Task</h3>
+        <h3 className="font-semibold mb-3 text-gray-600">New Task</h3>
 
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Task title"
-          className="w-full border rounded px-3 py-2 text-sm mb-4"
+          className="w-full border rounded px-3 py-2 text-sm text-gray-600 mb-4"
           autoFocus
         />
 
@@ -83,7 +83,7 @@ export default function CreateTaskModal({
           <select
             value={priority}
             onChange={(e) => setPriority(Number(e.target.value))}
-            className="border rounded-md p-2 text-sm w-full"
+            className="border rounded-md p-2 text-sm w-full text-gray-600"
           >
             <option value={0}>Low</option>
             <option value={1}>Medium</option>

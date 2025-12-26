@@ -45,12 +45,12 @@ export default function EditTaskModal({ open, task, onClose, onSaved }: Props) {
         onSubmit={handleSubmit}
         className="bg-white rounded-lg p-6 w-full max-w-sm"
       >
-        <h2 className="text-lg font-semibold text-gray-500 mb-4">Edit Task</h2>
+        <h2 className="text-lg font-semibold text-gray-600 mb-4">Edit Task</h2>
 
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded px-3 text-gray-500 py-2 text-sm"
+          className="w-full border rounded px-3 text-gray-600 py-2 text-sm"
           autoFocus
         />
 
@@ -58,7 +58,7 @@ export default function EditTaskModal({ open, task, onClose, onSaved }: Props) {
           <button
             type="button"
             onClick={onClose}
-            className="text-sm border px-3 text-gray-500 py-1 rounded"
+            className="text-sm border px-3 text-gray-600 py-1 rounded"
           >
             Cancel
           </button>
