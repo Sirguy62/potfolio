@@ -1,6 +1,14 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
+
+
 
 datasource db {
   provider = "postgresql"
@@ -8,26 +16,24 @@ datasource db {
 }
 
 model User {
-  id            String           @id
+  id            String    @id
   name          String
-  email         String           @unique
+  email         String
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  activities    ActivityLog[]
-  assignments   TaskAssignment[]
-  workflows     Workflow[]       @relation("WorkflowOwner")
-  accounts      Account[]
   sessions      Session[]
+  accounts      Account[]
 
+  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String   @unique
+  token     String
   createdAt DateTime
   updatedAt DateTime
   ipAddress String?
@@ -35,6 +41,7 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([token])
   @@map("session")
 }
 
@@ -43,6 +50,7 @@ model Account {
   accountId             String
   providerId            String
   userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -52,7 +60,6 @@ model Account {
   password              String?
   createdAt             DateTime
   updatedAt             DateTime
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -66,77 +73,4 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
-}
-
-model Workflow {
-  id          String           @id @default(cuid())
-  name        String
-  description String?
-  ownerId     String
-  createdAt   DateTime         @default(now())
-  automations AutomationRule[]
-  stages      Stage[]
-  tasks       Task[]
-  owner       User             @relation("WorkflowOwner", fields: [ownerId], references: [id])
-}
-
-model Stage {
-  id         String   @id @default(cuid())
-  name       String
-  order      Int
-  workflowId String
-  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  tasks      Task[]
-
-  @@unique([workflowId, order])
-}
-
-model Task {
-  id          String           @id @default(cuid())
-  title       String
-  description String?
-  priority    Int              @default(0)
-  dueDate     DateTime?
-  createdAt   DateTime         @default(now())
-  workflowId  String
-  stageId     String
-  activities  ActivityLog[]
-  stage       Stage            @relation(fields: [stageId], references: [id], onDelete: Cascade)
-  workflow    Workflow         @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  assignments TaskAssignment[]
-}
-
-model TaskAssignment {
-  id         String   @id @default(cuid())
-  taskId     String
-  userId     String
-  assignedAt DateTime @default(now())
-  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([taskId, userId])
-}
-
-model ActivityLog {
-  id         String   @id @default(cuid())
-  action     String
-  entityId   String
-  entityType String
-  createdAt  DateTime @default(now())
-  userId     String?
-  taskId     String?
-  task       Task?    @relation(fields: [taskId], references: [id])
-  user       User?    @relation(fields: [userId], references: [id])
-}
-
-model AutomationRule {
-  id         String   @id @default(cuid())
-  name       String
-  trigger    String
-  condition  Json?
-  action     Json
-  isActive   Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  workflowId String
-  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 }

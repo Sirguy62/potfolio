@@ -5,7 +5,7 @@ import Navigation from "../components/Navigation";
 import { headers } from "next/headers";
 import React from "react";
 import Footer from "../components/Footer";
-import { auth } from "@/lib/auth";
+import { auth } from "../lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

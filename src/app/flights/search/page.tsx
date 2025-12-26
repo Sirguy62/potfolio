@@ -56,7 +56,7 @@ export default function FlightsSearchPage() {
   ]);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 min-h-screen  bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <FlightSearch
         onSearch={(params) => {
           const query = new URLSearchParams({
@@ -71,7 +71,11 @@ export default function FlightsSearchPage() {
         }}
       />
 
-      {loading && <div className="flex w-full justify-center items-center"><Spinner /></div>}
+      {loading && (
+        <div className="flex w-full justify-center items-center">
+          <Spinner />
+        </div>
+      )}
 
       {!loading && (
         <FlightResults

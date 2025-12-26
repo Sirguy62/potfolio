@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, signInSocial, signUp } from "@/lib/actions/auth-actions";
 
-
 export default function AuthClientPage() {
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState("");
