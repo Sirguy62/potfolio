@@ -3,11 +3,11 @@ import { getSession } from "@/lib/get-session";
 import { deleteTask, updateTask } from "@/domain/task/task.service";
 
 export async function PATCH(
-  request: NextRequest,
+  req: NextRequest,
   context: { params: Promise<{ taskId: string }> }
 ) {
   const { taskId } = await context.params;
-  const body = await request.json();
+  const body = await req.json();
 
   const session = await getSession();
   if (!session?.user?.id) {
@@ -23,7 +23,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _req: NextRequest,
   context: { params: Promise<{ taskId: string }> }
 ) {
   const { taskId } = await context.params;
@@ -33,11 +33,10 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  try {
-    await deleteTask({ taskId, userId: session.user.id });
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("DELETE TASK ERROR:", err);
-    return NextResponse.json({ error: "Failed" }, { status: 400 });
-  }
+  await deleteTask({
+    taskId,
+    userId: session.user.id,
+  });
+
+  return NextResponse.json({ success: true });
 }
