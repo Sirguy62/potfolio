@@ -3,28 +3,35 @@ import { getSession } from "@/lib/get-session";
 import { moveTask } from "@/domain/task/task.service";
 
 export async function PATCH(
-  request: NextRequest,
+  req: NextRequest,
   context: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await context.params;
-
   const session = await getSession();
+
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { toStageId } = body; // ✅ CORRECT NAME
+  // ✅ FIX: await params
+  const { taskId } = await context.params;
+
+  const body = await req.json();
+  const { toStageId } = body;
 
   if (!toStageId) {
-    return NextResponse.json({ error: "toStageId missing" }, { status: 400 });
+    return NextResponse.json({ error: "Missing toStageId" }, { status: 422 });
   }
 
-  await moveTask({
-    taskId,
-    toStageId, // ✅ matches service
-    userId: session.user.id,
-  });
+  try {
+    const task = await moveTask({
+      taskId,
+      toStageId,
+      userId: session.user.id,
+    });
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json(task);
+  } catch (error) {
+    console.error("MOVE TASK ERROR:", error);
+    return NextResponse.json({ error: "Failed to move task" }, { status: 400 });
+  }
 }

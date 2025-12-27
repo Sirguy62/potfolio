@@ -143,6 +143,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     const sourceStage = findStageByTaskId(taskId);
     const targetStage =
       localWorkflow.stages.find((s) => s.id === overId) ??
+      
       findStageByTaskId(overId);
 
     if (!sourceStage || !targetStage) return;
