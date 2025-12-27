@@ -4,16 +4,15 @@ import { moveTask } from "@/domain/task/task.service";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  context: { params: Promise<{ taskId: string }> }
 ) {
-  const session = await getSession();
+  const { taskId } = await context.params; // ✅ REQUIRED in Next 15
+  const { toStageId } = await req.json();
 
+  const session = await getSession();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const { taskId } = params;
-  const { toStageId } = await req.json();
 
   if (!toStageId) {
     return NextResponse.json({ error: "toStageId missing" }, { status: 400 });
