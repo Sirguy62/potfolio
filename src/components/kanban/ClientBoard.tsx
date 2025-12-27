@@ -7,15 +7,20 @@ import {
   DragStartEvent,
   DragOverlay,
   PointerSensor,
-  TouchSensor,
   useSensor,
   useSensors,
-  closestCenter,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import Column from "./ReadOnlyColumn";
 import { Task } from "@/types/task";
-import Link from "next/link";
+
+// type Task = {
+//   id: string;
+//   title: string;
+//   description?: string | null;
+//   priority?: number;
+//   dueDate?: Date | null;
+// };
 
 type Stage = {
   id: string;
@@ -33,25 +38,13 @@ type Workflow = {
 export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   const [localWorkflow, setLocalWorkflow] = useState(workflow);
   const deletingRef = useRef<Set<string>>(new Set());
+
+  // ✅ Drag overlay
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
-  /* =======================
-     ✅ MOBILE-FRIENDLY SENSORS
-  ======================= */
   const sensors = useSensors(
-    // Desktop / mouse
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8, // prevents accidental drag
-      },
-    }),
-
-    // Mobile / touch
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200, // 👈 long-press
-        tolerance: 5,
-      },
+      activationConstraint: { distance: 5 },
     })
   );
 
@@ -71,7 +64,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   }
 
   /* =======================
-     CRUD
+     CREATE
   ======================= */
   function handleTaskCreated(task: Task & { stageId: string }) {
     setLocalWorkflow((wf) => ({
@@ -84,18 +77,32 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     }));
   }
 
-  function handleTaskUpdated(updatedTask: Task) {
+  /* =======================
+     UPDATE (FIXED ✅)
+  ======================= */
+  function handleTaskUpdated(updatedTask: {
+    id: string;
+    title: string;
+    description?: string | null;
+    priority?: number;
+    dueDate?: Date | null;
+  }) {
     setLocalWorkflow((wf) => ({
       ...wf,
       stages: wf.stages.map((stage) => ({
         ...stage,
         tasks: stage.tasks.map((task) =>
-          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+          task.id === updatedTask.id
+            ? { ...task, ...updatedTask } // ✅ REPLACE
+            : task
         ),
       })),
     }));
   }
 
+  /* =======================
+     DELETE (UNCHANGED ✅)
+  ======================= */
   async function handleTaskDeleted(taskId: string) {
     if (deletingRef.current.has(taskId)) return;
     deletingRef.current.add(taskId);
@@ -111,7 +118,9 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     }));
 
     try {
-      const res = await fetch(`/api/tasks/${taskId}`, { method: "DELETE" });
+      const res = await fetch(`/api/tasks/${taskId}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error();
     } catch {
       setLocalWorkflow(previous);
@@ -121,16 +130,16 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   }
 
   /* =======================
-     DRAG HANDLERS
+     DRAG START
   ======================= */
   function handleDragStart(event: DragStartEvent) {
     const task = findTaskById(event.active.id as string);
     setActiveTask(task ?? null);
-
-    // 📳 Haptic feedback on mobile
-    navigator.vibrate?.(10);
   }
 
+  /* =======================
+     DRAG END
+  ======================= */
   async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     setActiveTask(null);
@@ -143,7 +152,6 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     const sourceStage = findStageByTaskId(taskId);
     const targetStage =
       localWorkflow.stages.find((s) => s.id === overId) ??
-      
       findStageByTaskId(overId);
 
     if (!sourceStage || !targetStage) return;
@@ -186,12 +194,14 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
               tasks: stage.tasks.filter((t) => t.id !== taskId),
             };
           }
+
           if (stage.id === targetStage.id) {
             return {
               ...stage,
               tasks: [...stage.tasks, movedTask],
             };
           }
+
           return stage;
         }),
       };
@@ -203,53 +213,32 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ toStageId: targetStage.id }),
       });
+
       if (!res.ok) throw new Error();
     } catch {
       setLocalWorkflow(previous);
     }
   }
 
-  /* =======================
-     RENDER
-  ======================= */
-  const isTouch =
-    typeof window !== "undefined" &&
-    window.matchMedia("(pointer: coarse)").matches;
-
   return (
-    <div className="space-y-6 px-4">
-      <Link
-        href="/workflows"
-        className="inline-flex items-center text-sm pt-2 text-indigo-600 hover:underline"
-      >
-        ← Back to Workflows
-      </Link>
-
+    <div className="space-y-6 px-4 min-h-screen">
       <div>
         <h1 className="text-2xl font-semibold text-gray-800">
           {localWorkflow.name}
         </h1>
         {localWorkflow.description && (
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             {localWorkflow.description}
-          </p>
-        )}
-
-        {/* 📱 Mobile hint */}
-        {isTouch && (
-          <p className="text-xs text-gray-400 mt-1">
-            Long-press a task to move it
           </p>
         )}
       </div>
 
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-4 overflow-x-auto px-3">
+        <div className="flex gap-4 overflow-x-auto">
           {localWorkflow.stages.map((stage) => (
             <Column
               key={stage.id}
@@ -257,11 +246,12 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
               workflowId={localWorkflow.id}
               onTaskCreated={handleTaskCreated}
               onTaskDeleted={handleTaskDeleted}
-              onTaskUpdated={handleTaskUpdated}
+              onTaskUpdated={handleTaskUpdated} // ✅ FIX WIRED
             />
           ))}
         </div>
 
+        {/* ✅ Drag Overlay */}
         <DragOverlay>
           {activeTask ? (
             <div className="bg-white border rounded-md p-3 shadow-xl text-sm">

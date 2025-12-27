@@ -4,19 +4,22 @@ import { useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import CreateTaskModal from "./CreateTaskModal";
 import ReadOnlyCard from "./ReadOnlyCard";
+
 import { Task } from "@/types/task";
 
 type ColumnProps = {
   stage: {
     id: string;
     name: string;
-    tasks: Task[]; // ✅ FIXED
+    tasks: Task[]; // ✅ FULL Task type
   };
   workflowId: string;
   onTaskCreated: (task: Task & { stageId: string }) => void;
   onTaskDeleted: (taskId: string) => void;
-  onTaskUpdated: (task: Task) => void; // ✅ USE SHARED TYPE
+  onTaskUpdated: (task: Task) => void;
 };
+
+
 
 export default function Column({
   stage,
@@ -40,7 +43,7 @@ export default function Column({
       `}
     >
       {stage.tasks.length === 0 && (
-        <div className="text-xs text-gray-600 italic py-4 text-center border border-dashed rounded">
+        <div className="text-xs text-gray-400 italic py-4 text-center border border-dashed rounded">
           Drop tasks here
         </div>
       )}
@@ -63,7 +66,7 @@ export default function Column({
             key={task.id}
             task={task}
             onTaskDeleted={onTaskDeleted}
-            onTaskUpdated={onTaskUpdated} // ✅ CORRECT
+            onTaskUpdated={onTaskUpdated} // ✅ FIX
           />
         ))}
       </div>

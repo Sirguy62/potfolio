@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { Task } from "@/types/task";
+import { useState } from "react";
 
 type Props = {
   open: boolean;
-  task: Task;
+  task: { id: string; title: string };
   onClose: () => void;
   onSaved: (task: Task) => void;
 };
@@ -13,9 +13,6 @@ type Props = {
 export default function EditTaskModal({ open, task, onClose, onSaved }: Props) {
   const [title, setTitle] = useState(task.title);
   const [loading, setLoading] = useState(false);
-  const [dueDate, setDueDate] = useState(
-    task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ""
-  );
 
   if (!open) return null;
 
@@ -27,10 +24,7 @@ export default function EditTaskModal({ open, task, onClose, onSaved }: Props) {
       const res = await fetch(`/api/tasks/${task.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          dueDate: dueDate ? new Date(dueDate) : null,
-        }),
+        body: JSON.stringify({ title }),
       });
 
       if (!res.ok) throw new Error();
@@ -38,37 +32,41 @@ export default function EditTaskModal({ open, task, onClose, onSaved }: Props) {
       const updated = await res.json();
       onSaved(updated);
       onClose();
+    } catch {
+      alert("Failed to update task");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg w-96 p-5">
-        <h3 className="font-semibold mb-3 text-gray-600">Edit Task</h3>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-lg p-6 w-full max-w-sm"
+      >
+        <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
 
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded px-3 py-2 text-sm mb-3"
+          className="w-full border rounded px-3 py-2 text-sm"
+          autoFocus
         />
 
-        <label className="block text-sm text-gray-600 mb-1">Due date</label>
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          className="border rounded-md p-2 text-sm w-full mb-4"
-        />
-
-        <div className="flex justify-end gap-2">
-          <button type="button" onClick={onClose}>
+        <div className="flex justify-end gap-2 mt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-sm border px-3 py-1 rounded"
+          >
             Cancel
           </button>
+
           <button
+            type="submit"
             disabled={loading}
-            className="bg-indigo-600 text-white px-4 py-2 rounded"
+            className="text-sm bg-indigo-600 text-white px-3 py-1 rounded"
           >
             Save
           </button>
