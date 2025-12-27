@@ -6,11 +6,6 @@ import { CSS } from "@dnd-kit/utilities";
 import EditTaskModal from "./EditTaskModal";
 import { Task } from "@/types/task";
 
-// type Task = {
-//   id: string;
-//   title: string;
-// };
-
 type Props = {
   task: Task;
   onTaskDeleted: (taskId: string) => void;
@@ -27,17 +22,36 @@ export default function ReadOnlyCard({
   const { setNodeRef, attributes, listeners, transform, transition } =
     useSortable({ id: task.id });
 
+  const priorityLabel =
+    task.priority === 2 ? "High" : task.priority === 1 ? "Medium" : "Low";
+
+  const priorityColor =
+    task.priority === 2
+      ? "bg-red-100 text-red-700"
+      : task.priority === 1
+      ? "bg-yellow-100 text-yellow-700"
+      : "bg-green-100 text-green-700";
+
   return (
     <>
       <div
         ref={setNodeRef}
         style={{ transform: CSS.Transform.toString(transform), transition }}
-        className="bg-white border rounded-md p-3"
+        className="bg-white border rounded-md p-3 shadow-sm"
       >
-        <div className="flex justify-between items-start">
-          <span className="text-sm">{task.title}</span>
+        {/* TOP ROW */}
+        <div className="flex items-center justify-between gap-2">
+          {/* PRIORITY BADGE */}
+          <span className={`text-xs px-2 py-0.5 rounded ${priorityColor}`}>
+            {priorityLabel}
+          </span>
 
-          {/* Drag handle */}
+          {/* TITLE */}
+          <span className="text-sm font-medium flex-1 truncate">
+            {task.title}
+          </span>
+
+          {/* DRAG HANDLE */}
           <span
             {...listeners}
             {...attributes}
@@ -47,6 +61,7 @@ export default function ReadOnlyCard({
           </span>
         </div>
 
+        {/* ACTIONS */}
         <div className="flex gap-3 mt-2">
           <button
             onClick={() => setOpen(true)}
@@ -62,6 +77,13 @@ export default function ReadOnlyCard({
             Delete
           </button>
         </div>
+
+        {/* DUE DATE (optional) */}
+        {task.dueDate && (
+          <p className="text-xs text-gray-500 mt-1">
+            Due {new Date(task.dueDate).toLocaleDateString()}
+          </p>
+        )}
       </div>
 
       <EditTaskModal

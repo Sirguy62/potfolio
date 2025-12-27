@@ -6,7 +6,7 @@ export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await context.params; // ✅ REQUIRED
+  const { taskId } = await context.params;
   const body = await req.json();
 
   const session = await getSession();
@@ -26,7 +26,7 @@ export async function DELETE(
   _req: NextRequest,
   context: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await context.params; // ✅ REQUIRED
+  const { taskId } = await context.params;
 
   const session = await getSession();
   if (!session?.user?.id) {

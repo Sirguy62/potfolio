@@ -13,14 +13,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import Column from "./ReadOnlyColumn";
 import { Task } from "@/types/task";
-
-// type Task = {
-//   id: string;
-//   title: string;
-//   description?: string | null;
-//   priority?: number;
-//   dueDate?: Date | null;
-// };
+import Link from "next/link";
 
 type Stage = {
   id: string;
@@ -38,8 +31,6 @@ type Workflow = {
 export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   const [localWorkflow, setLocalWorkflow] = useState(workflow);
   const deletingRef = useRef<Set<string>>(new Set());
-
-  // ✅ Drag overlay
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const sensors = useSensors(
@@ -78,22 +69,24 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   }
 
   /* =======================
-     UPDATE (FIXED ✅)
+     UPDATE (FIXED — PRIORITY SAFE)
   ======================= */
-  function handleTaskUpdated(updatedTask: {
-    id: string;
-    title: string;
-    description?: string | null;
-    priority?: number;
-    dueDate?: Date | null;
-  }) {
+  function handleTaskUpdated(updatedTask: Partial<Task> & { id: string }) {
     setLocalWorkflow((wf) => ({
       ...wf,
       stages: wf.stages.map((stage) => ({
         ...stage,
         tasks: stage.tasks.map((task) =>
           task.id === updatedTask.id
-            ? { ...task, ...updatedTask } // ✅ REPLACE
+            ? {
+                ...task,
+                ...updatedTask,
+                // ✅ NEVER allow priority to be wiped
+                priority:
+                  updatedTask.priority !== undefined
+                    ? updatedTask.priority
+                    : task.priority,
+              }
             : task
         ),
       })),
@@ -101,7 +94,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
   }
 
   /* =======================
-     DELETE (UNCHANGED ✅)
+     DELETE
   ======================= */
   async function handleTaskDeleted(taskId: string) {
     if (deletingRef.current.has(taskId)) return;
@@ -118,9 +111,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     }));
 
     try {
-      const res = await fetch(`/api/tasks/${taskId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(`/api/tasks/${taskId}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
     } catch {
       setLocalWorkflow(previous);
@@ -158,7 +149,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
 
     const previous = structuredClone(localWorkflow);
 
-    // ✅ SAME COLUMN REORDER
+    // SAME COLUMN REORDER
     if (sourceStage.id === targetStage.id) {
       const oldIndex = sourceStage.tasks.findIndex((t) => t.id === taskId);
       const newIndex = sourceStage.tasks.findIndex((t) => t.id === overId);
@@ -180,7 +171,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
       return;
     }
 
-    // ✅ CROSS COLUMN MOVE
+    // CROSS COLUMN MOVE
     setLocalWorkflow((wf) => {
       const movedTask = sourceStage.tasks.find((t) => t.id === taskId);
       if (!movedTask) return wf;
@@ -220,14 +211,24 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
     }
   }
 
+  /* =======================
+     RENDER
+  ======================= */
   return (
-    <div className="space-y-6 px-4 min-h-screen">
+    <div className="space-y-6 px-4">
+      <Link
+        href="/workflows"
+        className="inline-flex items-center text-sm pt-2 text-indigo-600 hover:underline"
+      >
+        ← Back to Workflows
+      </Link>
+
       <div>
         <h1 className="text-2xl font-semibold text-gray-800">
           {localWorkflow.name}
         </h1>
         {localWorkflow.description && (
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             {localWorkflow.description}
           </p>
         )}
@@ -238,7 +239,7 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-4 overflow-x-auto">
+        <div className="flex gap-4 overflow-x-auto px-3">
           {localWorkflow.stages.map((stage) => (
             <Column
               key={stage.id}
@@ -246,12 +247,11 @@ export default function ClientBoard({ workflow }: { workflow: Workflow }) {
               workflowId={localWorkflow.id}
               onTaskCreated={handleTaskCreated}
               onTaskDeleted={handleTaskDeleted}
-              onTaskUpdated={handleTaskUpdated} // ✅ FIX WIRED
+              onTaskUpdated={handleTaskUpdated}
             />
           ))}
         </div>
 
-        {/* ✅ Drag Overlay */}
         <DragOverlay>
           {activeTask ? (
             <div className="bg-white border rounded-md p-3 shadow-xl text-sm">
