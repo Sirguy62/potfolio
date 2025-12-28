@@ -24,13 +24,16 @@ model User {
   updatedAt     DateTime
 
   // Auth relations
-  sessions      Session[]
-  accounts      Account[]
+  sessions Session[]
+  accounts Account[]
 
-  // Workflow relations (SAFE additions)
-  workflows     Workflow[]
-  assignments   TaskAssignment[]
-  activities    ActivityLog[]
+  // Workflow relations
+  workflows   Workflow[]
+  assignments TaskAssignment[]
+  activities  ActivityLog[]
+
+  // ✅ ADD THIS
+  workflowMemberships WorkflowMember[]
 
   @@map("user")
 }
@@ -45,7 +48,7 @@ model Session {
   userAgent String?
   userId    String
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("session")
 }
@@ -81,7 +84,7 @@ model Verification {
 }
 
 //////////////////////////////////////////////////////
-// WORKFLOW MODELS (SEPARATE TABLES)
+// WORKFLOW / KANBAN MODELS (PRODUCTION SAFE)
 //////////////////////////////////////////////////////
 
 model Workflow {
@@ -91,7 +94,8 @@ model Workflow {
   ownerId     String
   createdAt   DateTime @default(now())
 
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner       User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  members     WorkflowMember[] // ✅ ADD
   stages      Stage[]
   tasks       Task[]
   automations AutomationRule[]
@@ -100,37 +104,46 @@ model Workflow {
 }
 
 model Stage {
-  id         String   @id @default(cuid())
+  id         String @id @default(cuid())
   name       String
   order      Int
   workflowId String
 
-  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  tasks      Task[]
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  tasks    Task[]
 
+  // Enforces deterministic column ordering
   @@unique([workflowId, order])
+  @@index([workflowId])
 }
 
 model Task {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
-  priority    Int      @default(0)
+  priority    Int       @default(0)
   dueDate     DateTime?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
 
-  workflowId  String
-  stageId     String
+  workflowId String
+  stageId    String
+  order      Int
 
-  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  stage       Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  stage    Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
 
   assignments TaskAssignment[]
   activities  ActivityLog[]
 
+  // Critical for stable ordering & safe moves
+  @@unique([stageId, order])
   @@index([workflowId])
   @@index([stageId])
 }
+
+//////////////////////////////////////////////////////
+// TASK ASSIGNMENTS & ACTIVITY LOG
+//////////////////////////////////////////////////////
 
 model TaskAssignment {
   id         String   @id @default(cuid())
@@ -138,8 +151,8 @@ model TaskAssignment {
   userId     String
   assignedAt DateTime @default(now())
 
-  task       Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([taskId, userId])
   @@index([userId])
@@ -152,31 +165,51 @@ model ActivityLog {
   entityType String
   createdAt  DateTime @default(now())
 
-  userId     String?
-  taskId     String?
+  userId String?
+  taskId String?
 
-  user       User? @relation(fields: [userId], references: [id])
-  task       Task? @relation(fields: [taskId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+  task Task? @relation(fields: [taskId], references: [id])
 
   @@index([userId])
   @@index([taskId])
 }
 
 //////////////////////////////////////////////////////
-// AUTOMATION
+// AUTOMATION (SERVER-ONLY INTERPRETATION)
 //////////////////////////////////////////////////////
 
 model AutomationRule {
-  id          String   @id @default(cuid())
-  name        String
-  trigger     String
-  condition   Json?
-  action      Json
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  trigger   String
+  condition Json?
+  action    Json
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
 
-  workflowId  String
-  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 
   @@index([workflowId])
+}
+
+model WorkflowMember {
+  id         String       @id @default(cuid())
+  workflowId String
+  userId     String
+  role       WorkflowRole
+  createdAt  DateTime     @default(now())
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workflowId, userId])
+  @@index([userId])
+}
+
+enum WorkflowRole {
+  OWNER
+  EDITOR
+  VIEWER
 }
