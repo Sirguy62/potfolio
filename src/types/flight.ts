@@ -14,7 +14,6 @@ export type Price = {
 
 export type FlightBadge = "CHEAPEST" | "FASTEST" | "BEST";
 
-// app/types/flight.ts
 export type ExpiredOfferSnapshot = {
   offerToken: string;
   departureTime: string;
@@ -22,12 +21,6 @@ export type ExpiredOfferSnapshot = {
   stops: number;
 };
 
-
-
-/**
- * ✅ FINAL normalized flight shape
- * This is the ONLY type used by FlightCard, FlightResults, Details, state
- */
 export type NormalizedFlight = {
   offerToken: string;
 
@@ -42,7 +35,6 @@ export type NormalizedFlight = {
   durationText: string;
   stops: number;
 
-  /** 🔑 ALWAYS an array — never optional */
   layovers: string[];
 
   cabinClass: string;

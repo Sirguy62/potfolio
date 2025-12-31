@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { auth } from "../auth";
+
 import { headers } from "next/headers";
+import { auth } from "../auth";
 
 export const signUp = async (email: string, password: string, name: string) => {
   const result = await auth.api.signUpEmail({

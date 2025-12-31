@@ -57,7 +57,7 @@ export default function Navigation({ session }: { session: Session | null }) {
                 <NavLink href="/attraction" active={isActive("/attraction")}>
                   Attraction
                 </NavLink>
-                <NavLink href="/workflows" active={isActive("/workflows")}>
+                <NavLink href="/" active={isActive("/workflows")}>
                   Workflows
                 </NavLink>
 
@@ -114,7 +114,7 @@ export default function Navigation({ session }: { session: Session | null }) {
               <MobileLink href="/attraction" onClick={() => setOpen(false)}>
                 Attraction
               </MobileLink>
-              <MobileLink href="/workflows" onClick={() => setOpen(false)}>
+              <MobileLink href="/" onClick={() => setOpen(false)}>
                 Workflows
               </MobileLink>
 
