@@ -1,25 +1,22 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import { prisma } from "./db";
+import { prisma } from "@/lib/db"; // ✅ USE SHARED INSTANCE
 
 export const auth = betterAuth({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL!, // REQUIRED
   database: prismaAdapter(prisma, { provider: "postgresql" }),
-
-  emailAndPassword: { enabled: true },
-
+  emailAndPassword: {
+    enabled: true,
+  },
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-
   plugins: [nextCookies()],
-  trustedOrigins: ["http://localhost:3000", "https://bookora-mu.vercel.app/"],
 });
