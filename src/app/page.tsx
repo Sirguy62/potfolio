@@ -25,7 +25,7 @@ export default function Home() {
             </p>
           </div>
           <div className="">
-            <HomePageSearch />
+            <HomePageSearch /> 
           </div>
         </section>
 

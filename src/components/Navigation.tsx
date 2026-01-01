@@ -57,7 +57,10 @@ export default function Navigation({ session }: { session: Session | null }) {
                 <NavLink href="/attraction" active={isActive("/attraction")}>
                   Attraction
                 </NavLink>
-                <NavLink href="/" active={isActive("/workflows")}>
+                <NavLink
+                  href="https://workflow-pm6fythmf-edwin-gospels-projects-92352d7a.vercel.app/workflows"
+                  active={isActive("/workflows")}
+                >
                   Workflows
                 </NavLink>
 
@@ -114,7 +117,10 @@ export default function Navigation({ session }: { session: Session | null }) {
               <MobileLink href="/attraction" onClick={() => setOpen(false)}>
                 Attraction
               </MobileLink>
-              <MobileLink href="/" onClick={() => setOpen(false)}>
+              <MobileLink
+                href="https://workflow-pm6fythmf-edwin-gospels-projects-92352d7a.vercel.app/workflows"
+                onClick={() => setOpen(false)}
+              >
                 Workflows
               </MobileLink>
 
