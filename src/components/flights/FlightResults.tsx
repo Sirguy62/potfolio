@@ -66,8 +66,6 @@ export default function FlightResults({
               : segment.duration ?? "",
 
             stops: Math.max(segment.legs.length - 1, 0),
-
-            /** 🔑 ALWAYS ARRAY */
             layovers:
               segment.legs.length > 1
                 ? segment.legs

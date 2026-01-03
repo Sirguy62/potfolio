@@ -14,8 +14,6 @@ export default function AuthClientPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Get callback URL from search params (set by middleware)
-
   const handleSocialAuth = async (provider: "google" | "github") => {
     setIsLoading(true);
     setError("");
@@ -266,8 +264,8 @@ export default function AuthClientPage() {
               type="button"
               onClick={() => {
                 setIsSignIn(!isSignIn);
-                setError(""); // Clear any previous errors
-                setName(""); // Clear name when switching modes
+                setError(""); 
+                setName(""); 
               }}
               className="text-indigo-600 hover:text-indigo-500 text-sm font-medium transition-colors"
             >

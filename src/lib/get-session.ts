@@ -5,7 +5,6 @@ export async function getSession() {
   const cookieStore = await cookies();
   const headerStore = await headers();
 
-  // Build cookie header manually
   const cookieHeader = cookieStore
     .getAll()
     .map((c) => `${c.name}=${c.value}`)

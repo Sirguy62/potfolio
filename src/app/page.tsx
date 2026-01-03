@@ -5,7 +5,6 @@ import FlightOffers from "../components/FlightOffers";
 export default function Home() {
   return (
     <div className=" xl:min-h-[30vh] ">
-      {/* Hero Section */}
       <main>
         <section
           className="flex flex-col relative w-full  md:min-h-[90vh] bg-cover bg-center px-2 items-center justify-center"
