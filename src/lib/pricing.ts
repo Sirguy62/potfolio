@@ -6,7 +6,7 @@ export function calculateNights(checkin: string, checkout: string): number {
 }
 export function calculateTotal(pricePerNight: number, nights: number) {
   const subtotal = Math.round(pricePerNight * nights);
-  const taxes = Math.round(subtotal * 0.08); // 8% example
+  const taxes = Math.round(subtotal * 0.08);
   const total = subtotal + taxes;
 
   return {
